@@ -1,0 +1,4 @@
+parameters:
+  app: __s_app
+  version: __s_version
+  namespace: __s_namespace
