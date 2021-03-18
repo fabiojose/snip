@@ -2,20 +2,22 @@
 
 # The easiest way to scaffold projects
 
-Are you tired of complex placeholders that breaks your code?
+_Are you tired of complex placeholders that breaks your code?_
 
-- __snip__ is the answer! 🐦
+- 🐦 __Snip__ is the answer! 🐦
 
-If you, like me, is tired to loosing your time with magical scaffolding
-tools with weird synthaxes and tons of useless functions. Because
-at the of the day we just want a new app based in some template to
-start programming.
+If you, like me, is tired to losing your time with magical scaffolding
+tools with weird syntaxes and tons of useless functions, install
+Snip and scaffold now a new application.
 
-Why use `${placeholder}`, `{{placeholder}}` or `[placeholder]`
-if you can use `__s_placeholder_`?
+> because at the of the day we just want a new app based on some template to
+start our programming
 
-In any modern language, underscore `_` is a valid name identifier,
-because of that we just employ it at placeholder syntax.
+💡 Why use `${placeholder}`, `{{placeholder}}` or `[placeholder]`
+if we can just use `__s_placeholder_`? 
+
+🦊 In any modern language, underscore `_` is a valid name identifier,
+because of that we just employ it in the placeholder syntax.
 
 - [Java](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html#naming)
 - [JavaScritp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables)
@@ -25,19 +27,19 @@ because of that we just employ it at placeholder syntax.
 - [Rust]()
 - [Ruby]()
 
-The old ones too:
+🧠 But Snip is not limited to programming languages. We are able to scaffold
+any file that is not binary.
 
-- [bash]()
-- [C/C++]()
-- [Pascal]()
+> can you imagine the possibilities?
 
-With Snip placeholder synthax, we:
+👟 With Snip _we..._:
 
 - have no special structure
 - have no special files
-- have at same time we have a template and an application
+- have at same time a template and an application
 - have a fancy name for templates: __templation__ ❤️
-- can build and run our templation
+- are able to build and run our templation, naturally without any
+  kind of special tool or dependency
 - can easily refactor and update our templation
 
 ## Getting Stated
