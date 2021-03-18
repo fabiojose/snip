@@ -9,14 +9,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="791.7309"
-   height="407.74835"
-   viewBox="0 0 209.4788 107.88342"
+   width="1280"
+   height="640"
+   viewBox="0 0 338.66666 169.33333"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="snip-horizontal.svg"
-   inkscape:export-filename="/home/fabiojose/snip/artwork/snip-github-banner.png"
+   sodipodi:docname="snip-github-banner.svg"
+   inkscape:export-filename="/home/fabiojose/snip/artwork/snip-horizontal.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <defs
@@ -28,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="123.01925"
-     inkscape:cy="588.05217"
+     inkscape:zoom="0.7"
+     inkscape:cx="731.55738"
+     inkscape:cy="407.15004"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -60,7 +60,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-13.094209,-105.27844)">
+     transform="translate(48.542898,-87.748193)">
     <g
        id="g4797"
        transform="matrix(0.72135462,0,0,0.72135462,54.551952,17.006094)">
@@ -118,5 +118,16 @@
          x="117.81765"
          id="tspan4799"
          sodipodi:role="line">snip</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.36777878px;line-height:1.25;font-family:'Abyssinica SIL';-inkscape-font-specification:'Abyssinica SIL';letter-spacing:0px;word-spacing:0px;fill:#3f0365;fill-opacity:1;stroke:none;stroke-width:0.23419449"
+       x="44.013226"
+       y="228.9698"
+       id="text852"><tspan
+         sodipodi:role="line"
+         id="tspan850"
+         x="44.013226"
+         y="228.9698"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Abyssinica SIL';-inkscape-font-specification:'Abyssinica SIL';fill:#3f0365;fill-opacity:1;stroke-width:0.23419449">The easiest way to scaffold projects</tspan></text>
   </g>
 </svg>
