@@ -72,7 +72,7 @@ public class CreateCommand implements Runnable {
             "-d",
             "--directory"
         },
-        description = "Directory to hold the new app (default to current)'",
+        description = "Directory to hold the new app (default to current)",
         descriptionKey = "/path/to/",
         showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
         defaultValue = ".",
