@@ -1,9 +1,7 @@
 package io.github.kattlo.snip;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -12,18 +10,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.io.FileUtils;
-import org.unix4j.Unix4j;
-import org.unix4j.unix.sed.SedOption;
 
 import io.github.kattlo.snip.context.Context;
+import io.github.kattlo.snip.processor.Processor;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -42,27 +37,11 @@ import picocli.CommandLine.Model.CommandSpec;
 @Slf4j
 public class CreateCommand implements Runnable {
 
-    public static final String APP_PARAM = "__s_app_";
-    public static final String VERSION_PARAM = "__s_version_";
-    public static final String NAMESPACE_PARAM = "__s_namespace_";
-
     private static final List<String> RESERVED_WORDS = List.of(
-        APP_PARAM,
-        VERSION_PARAM,
-        NAMESPACE_PARAM
+        Context.APP_PARAM,
+        Context.VERSION_PARAM,
+        Context.NAMESPACE_PARAM
     );
-
-    private static final String PLACEHOLDER_PATTERN_STRING = 
-        "__[0-9a-zA-Z]+_[0-9a-zA-Z]+_";
-
-    private static final Pattern PLACEHOLDER_PATTERN = 
-        Pattern.compile("(" + PLACEHOLDER_PATTERN_STRING + ")");
-
-    private static final Pattern OPTION_PATTERN = 
-        Pattern.compile("^[\\w\\.\\-]+$");
-
-    private static final Pattern PARAM_PATTERN = 
-        Pattern.compile("^" + PLACEHOLDER_PATTERN_STRING + "=.+$");
 
     private static final Pattern LOCAL_TEMPLATE = 
         Pattern.compile("^file:/.+$");
@@ -81,7 +60,7 @@ public class CreateCommand implements Runnable {
 
     private void validate(String value, String argName) {
 
-        if(!OPTION_PATTERN.matcher(value).matches()){
+        if(!Context.OPTION_PATTERN.matcher(value).matches()){
             throw new CommandLine.ParameterException(spec.commandLine(),
                 "Invalid value of " + argName);
         }
@@ -122,7 +101,7 @@ public class CreateCommand implements Runnable {
         validate(appname, "--app-name");
         this.appname = appname;
 
-        parameterValues.put(APP_PARAM, this.appname);
+        parameterValues.put(Context.APP_PARAM, this.appname);
     }
 
     @Option(
@@ -139,7 +118,7 @@ public class CreateCommand implements Runnable {
         validate(version, "--app-version");
         this.version = version;
 
-        parameterValues.put(VERSION_PARAM, this.version);
+        parameterValues.put(Context.VERSION_PARAM, this.version);
     }
 
     @Option(
@@ -156,7 +135,7 @@ public class CreateCommand implements Runnable {
         validate(namespace, "--app-namespace");
         this.namespace = namespace;
 
-        parameterValues.put(NAMESPACE_PARAM, this.namespace);
+        parameterValues.put(Context.NAMESPACE_PARAM, this.namespace);
     }
 
     @Option(
@@ -205,7 +184,7 @@ public class CreateCommand implements Runnable {
     public void setParameters(String[] parameters) {
         var invalid = 
             Arrays.asList(parameters).stream()
-                .filter(p -> !PARAM_PATTERN.matcher(p).matches())
+                .filter(p -> !Context.PARAM_PATTERN.matcher(p).matches())
                 .collect(Collectors.toList());
 
         if(!invalid.isEmpty()){
@@ -252,143 +231,6 @@ public class CreateCommand implements Runnable {
         return target;
     }
 
-    private void processNamespace(Path folder) {
-
-        var dirtree = this.namespace.replaceAll("\\.", File.separator);
-        log.debug("Directory tree from namespace {}", dirtree);
-
-        var newFolder = Path.of(folder.toString().replaceAll(NAMESPACE_PARAM, dirtree));
-        log.debug("New directory hierarchy to create {}", newFolder);
-
-        try {
-            FileUtils.moveDirectory(folder.toFile(), newFolder.toFile());
-        } catch(IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void processFolder(Map<String, String> ph, Path folder) {
-
-        var matcher = PLACEHOLDER_PATTERN.matcher(folder.toString());
-        var found = "";
-        while(matcher.find()){
-            found = matcher.group(matcher.groupCount());
-            log.debug("Latest placeholder within {}: {}", folder, found);
-        }
-
-        final var latest = found;
-
-        var value = Optional.ofNullable(ph.get(latest));
-        log.debug("Value to apply {} to {}", value, latest);
-
-        value.ifPresent(v -> {
-            var target = Path.of(folder.toString().replaceAll(latest, v));
-            log.debug("New directory hierarchy to create {}", target);
-
-            try{
-                FileUtils.moveDirectory(folder.toFile(), target.toFile());
-            }catch(IOException e){
-                throw new UncheckedIOException(e);
-            }
-        });
-    }
-
-    private void processFolder(Context context) throws IOException {
-
-        var folders = Files.walk(context.getTarget())
-            .filter(Files::isDirectory)
-            .filter(context.getInclude()::folder)
-            .filter(folder -> 
-                context.getPlaceholders().keySet().stream()
-                    .filter(placeholder -> folder.toString().contains(placeholder))
-                    .findAny()
-                    .isPresent()
-            )
-            .sorted((p1, p2) -> 
-                // deepest paths first
-                p2.toString().split(File.separator).length
-                - p1.toString().split(File.separator).length
-            )
-            .peek(f -> log.debug("Folder to process {}", f))
-            .collect(Collectors.toList());
-
-        /*
-         * this is necessary because during the processing
-         * the folders may be moved
-         */
-        folders.forEach(folder -> {
-            if(folder.toString().contains(NAMESPACE_PARAM)){
-                processNamespace(folder);
-
-            } else {
-
-                var placeholders = context.getPlaceholders().entrySet().stream()
-                    .filter(kv -> folder.toString().contains(kv.getKey()))
-                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-
-                processFolder(placeholders, folder);
-
-            }
-        });
-    }
-
-    private void processFileName(Entry<String, String> ph, Path file){
-        log.debug("Placeholder {} and file {}", ph, file);
-
-        var newFile = Path.of(file.toString().replaceAll(ph.getKey(), ph.getValue()));
-        log.debug("File will be renamed to {}", newFile);
-
-        try {
-            FileUtils.moveFile(file.toFile(), newFile.toFile());
-        } catch(IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    private void processFileName(Context context) throws IOException {
-
-        Files.walk(context.getTarget())
-            .filter(context.getInclude()::it)
-            .filter(Files::isRegularFile)
-            .filter(file -> 
-                context.getPlaceholders().keySet().stream()
-                    .filter(placeholder -> file.toString().contains(placeholder))
-                    .findAny()
-                    .isPresent()
-            )
-            .forEach(f -> 
-                context.getPlaceholders().entrySet().stream()
-                    .filter(kv -> f.toString().contains(kv.getKey()))
-                    .forEach(placeholder -> 
-                        processFileName(placeholder, f)
-                    ));
-    }
-
-    private void processFileContent(Context context) throws IOException {
-
-        Files.walk(context.getTarget())
-            .filter(context.getInclude()::it)
-            .filter(Files::isRegularFile)
-            .peek(f -> log.debug("File to process its content {}", f.toAbsolutePath()))
-            .forEach(f -> 
-                context.getPlaceholders().entrySet().stream()
-                    .peek(ph -> log.debug("Placeholder for file content {}", ph))
-                    .forEach(ph -> {
-                        try{
-                            var tmp = new File(FileUtils.getTempDirectory(), f.toFile().getName());
-                            FileUtils.copyFile(f.toFile(), tmp, false);
-
-                            Unix4j
-                                .cat(tmp)
-                                .sed(SedOption.substitute, ph.getKey(), ph.getValue())
-                                .toWriter(new FileWriter(f.toFile()));
-                        }catch(IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    })
-            );
-    }
-
     @Override
     public void run() {
     
@@ -409,13 +251,13 @@ public class CreateCommand implements Runnable {
             var context = Context.create(parameterValues, template, appdir);
 
             // process folders parameters
-            processFolder(context);
+            Processor.forDirectories().process(context);;
 
             // process file name parameters
-            processFileName(context);
+            Processor.forFiles().process(context);
 
             // process file content parameters
-            processFileContent(context);
+            Processor.forContent().process(context);
 
         }catch(IOException e){
             throw new CommandLine.ExecutionException(spec.commandLine(),
