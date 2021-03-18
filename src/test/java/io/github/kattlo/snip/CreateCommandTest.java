@@ -373,6 +373,8 @@ public class CreateCommandTest {
         // setup
         var expected = Path.of(directory, "app-name-10/src/app-name-10/some-file.txt");
 
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>> separator " + File.separator);
+
         String[] args = {
             "create",
             "-d", directory,
