@@ -215,7 +215,7 @@ public class CreateCommandTest {
             "-a", "app-name-0",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -247,7 +247,7 @@ public class CreateCommandTest {
             "-a", "app-name-5",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -278,7 +278,7 @@ public class CreateCommandTest {
             "-a", "app-name-6",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -304,7 +304,7 @@ public class CreateCommandTest {
             "-a", "app-name-7",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -329,7 +329,7 @@ public class CreateCommandTest {
             "-a", "app-name-8",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -354,7 +354,7 @@ public class CreateCommandTest {
             "-a", "app-name-9",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -379,7 +379,7 @@ public class CreateCommandTest {
             "-a", "app-name-10",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -410,7 +410,7 @@ public class CreateCommandTest {
             "-a", "app-name-11",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -435,7 +435,7 @@ public class CreateCommandTest {
             "-a", "app-name-12",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -466,7 +466,7 @@ public class CreateCommandTest {
             "-a", "app-name-13",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -497,7 +497,7 @@ public class CreateCommandTest {
             "-a", "app-name-14",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=my-domain"
         };
 
@@ -523,7 +523,7 @@ public class CreateCommandTest {
             "-a", "app-name-16",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=domain"
         };
 
@@ -549,7 +549,7 @@ public class CreateCommandTest {
             "-a", "app-name-15",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=my-custom"
         };
 
@@ -575,7 +575,7 @@ public class CreateCommandTest {
             "-a", "app-name-17",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=custom"
         };
 
@@ -601,7 +601,7 @@ public class CreateCommandTest {
             "-a", "app-name-18",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_custom_=Some Text"
         };
 
@@ -619,6 +619,11 @@ public class CreateCommandTest {
 
             assertTrue(content.contains("custom=Some Text"));
         }
+    }
+
+    @Test
+    public void should_process_many_placeholder_occurrences_in_file_content() {
+
     }
 
     @Test
