@@ -11,7 +11,7 @@ tools with weird synthaxes and tons of useless functions. Because
 at the of the day we just want a new app based in some template to
 start programming.
 
-Why user `${placeholder}`, `{{placeholder}}` or `[placeholder]`
+Why use `${placeholder}`, `{{placeholder}}` or `[placeholder]`
 if you can use `__s_placeholder_`?
 
 In any modern language, underscore `_` is a valid name identifier,
