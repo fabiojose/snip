@@ -33,8 +33,8 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
-            "-p", "__s_namespace=a.namespace"
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__s_namespace_=a.namespace"
         };
 
         var command = new CommandLine(entry);
@@ -57,7 +57,7 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "my invalid param=with value"
         };
 
@@ -125,7 +125,7 @@ public class CreateCommandTest {
             "-a", "My Invalid App Namme",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0-SNAPSHOT",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -147,7 +147,7 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "my.namespace",
             "--app-version", "$no-a-version",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -169,7 +169,7 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "My Invalid Namespace",
             "--app-version", "1.0.0-SNAPSHOT",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
@@ -191,7 +191,7 @@ public class CreateCommandTest {
             "-a", "app-name-0",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
-            "--template", "file:" + new File(".").getAbsolutePath() + "/src/test/resources/example",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
         };
 
         var command = new CommandLine(entry);
