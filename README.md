@@ -22,6 +22,14 @@ because of that we just employ it at placeholder syntax.
 - [Python](https://www.w3schools.com/python/gloss_python_variable_names.asp)
 - [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/identifier-names)
 - [Golang](https://golang.org/ref/spec#Identifiers)
+- [Rust]()
+- [Ruby]()
+
+The old ones too:
+
+- [bash]()
+- [C/C++]()
+- [Pascal]()
 
 With Snip placeholder synthax, we:
 
@@ -44,13 +52,17 @@ TODO
 
 TODO
 
+## How to Create a Templation?
+
+TODO
+
 ## Required Options
 
 TODO
 
 ## Quarkus
 
-### Packaging and running the application
+### Packaging and Running Snip from Source
 
 The application can be packaged using:
 ```shell script
@@ -85,3 +97,7 @@ If you want to learn more about building native executables, please consult http
 ## Related guides
 
 - Picocli ([guide](https://quarkus.io/guides/picocli)): Develop command line applications with Picocli
+ 
+## Notes
+
+- <div>Snip icon made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
