@@ -90,13 +90,19 @@ Simplifing...:
 And you may use placeholders in directory name, file name and file content.
 
 - directory name:
-  - `/path/to/some/directory/src/__s_namespace_`
-  - `/path/to/directory/resources/__c_placeholderController`
-  - `/src/__s_namespace_/__d_domain_/__c_classname`
+  - /path/to/some/directory/src/`__s_namespace_`
+  - /path/to/directory/resources/`__c_placeholder_`Controller
+  - /src/`__s_namespace_`/`__d_domain_`/`__c_classname_`
 - file name:
-  - `/path/to/src/main/resources/__c_entity.avro`
-  - `/path/to/src/main/java/__s_namespace_/controller/__d_domainGet.java`
-  - ``
+  - /path/to/src/main/resources/`__c_entity_`.avsc
+  - /path/to/src/main/java/`__s_namespace_`/controller/`__d_domain_`Get.java
+- file content:
+```java
+package __s_namespace_;
+public class __d_domain_Get{
+
+}
+```
 
 ### Build-in Placeholders
 
@@ -104,7 +110,32 @@ And you may use placeholders in directory name, file name and file content.
 - `__s_app_`: application's name
 - `__s_version_`: application's version
 
-### Custom
+#### Processing of `__s_namespace_`
+
+When `__s_namespace_` is used in the directories names, there is a special
+processing.
+
+__Example__:
+
+When the templation has a directory structure like this:
+
+```
+.
+└── src
+    └── __s_namespace_
+```
+
+And `__s_namespace_=com.example`. After Snip scaffolding, the
+new directory structure will be:
+
+```
+.
+└── src
+    └── com
+        └── example
+```
+
+### Custom Placeholders
 
 TODO
 
