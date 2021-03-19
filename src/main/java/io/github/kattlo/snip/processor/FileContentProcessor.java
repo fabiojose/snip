@@ -34,11 +34,14 @@ public class FileContentProcessor implements Processor {
                         .peek(ph -> log.debug("Placeholder for file content {}", ph))
                         .forEach(ph -> {
                             try{
-                                var tmp = new File(FileUtils.getTempDirectory(), f.toFile().getName());
-                                FileUtils.copyFile(f.toFile(), tmp, false);
+                                var tmpDir = new File(FileUtils.getTempDirectory(), context.getAppname());
+                                FileUtils.forceMkdir(tmpDir);
+
+                                var tmpFile = new File(tmpDir, f.toFile().getName());
+                                FileUtils.copyFile(f.toFile(), tmpFile, false);
 
                                 Unix4j
-                                    .cat(tmp)
+                                    .cat(tmpFile)
                                     .sed(SedOption.substitute, ph.getKey(), ph.getValue())
                                     .toWriter(new FileWriter(f.toFile()));
                             }catch(IOException e) {
