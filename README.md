@@ -75,17 +75,34 @@ TODO
 Every placeholder must follow this pattern:
 - `__[0-9a-zA-Z]+_[0-9a-zA-Z]+_`
 
-Simplifing:
-- valid ones:
+Simplifing...:
+- ✅ valid placeholders names:
   - `__c_myplaceholder_`
   - `__cd_SomePlaceHolder_`
   - `__cde_place0_`
   - `__AB_Place90_`
-- non-valid ones:
+- ❌ invalid ones:
   - `__c_place-holder_`
   - `_d_placeholder_`
   - `__e_place holder_`
   - `__aplaceholder_`
+
+And you may use placeholders in directory name, file name and file content.
+
+- directory name:
+  - `/path/to/some/directory/src/__s_namespace_`
+  - `/path/to/directory/resources/__c_placeholderController`
+  - `/src/__s_namespace_/__d_domain_/__c_classname`
+- file name:
+  - `/path/to/src/main/resources/__c_entity.avro`
+  - `/path/to/src/main/java/__s_namespace_/controller/__d_domainGet.java`
+  - ``
+
+### Build-in Placeholders
+
+- `__s_namespace_`: application's namespace or package
+- `__s_app_`: application's name
+- `__s_version_`: application's version
 
 ### Custom
 
