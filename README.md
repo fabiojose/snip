@@ -6,7 +6,7 @@ _Are you tired of complex placeholders that breaks your code?_
 
 - 🐦 __Snip__ is the answer! 🐦
 
-If you, like me, is tired to losing your time with magical scaffolding
+🤲 If you (like me) is tired to losing your time with magical scaffolding
 tools with weird syntaxes and tons of useless functions, install
 Snip and scaffold now a new application.
 
@@ -24,8 +24,8 @@ because of that we just employ it in the placeholder syntax.
 - [Python](https://www.w3schools.com/python/gloss_python_variable_names.asp)
 - [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/identifier-names)
 - [Golang](https://golang.org/ref/spec#Identifiers)
-- [Rust]()
-- [Ruby]()
+- [Rust](https://doc.rust-lang.org/reference/identifiers.html)
+- [Ruby](https://ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/syntax.html#ident)
 
 🧠 But Snip is not limited to programming languages. We are able to scaffold
 any file that is not binary.
@@ -37,7 +37,7 @@ any file that is not binary.
 - have no special structure
 - have no special files
 - have at same time a template and an application
-- have a fancy name for templates: __templation__ ❤️
+- have a fancy name for templates: ❤️ __templation__ ❤️
 - are able to build and run our templation, naturally without any
   kind of special tool or dependency
 - can easily refactor and update our templation
