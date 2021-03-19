@@ -40,10 +40,12 @@ public class FileContentProcessor implements Processor {
                                 var tmpFile = new File(tmpDir, f.toFile().getName());
                                 FileUtils.copyFile(f.toFile(), tmpFile, false);
 
-                                Unix4j
-                                    .cat(tmpFile)
-                                    .sed(SedOption.substitute, ph.getKey(), ph.getValue())
-                                    .toWriter(new FileWriter(f.toFile()));
+                                try(var writer = new FileWriter(f.toFile())){
+                                    Unix4j
+                                        .cat(tmpFile)
+                                        .sed(SedOption.substitute, ph.getKey(), ph.getValue())
+                                        .toWriter(writer);
+                                }
                             }catch(IOException e) {
                                 throw new UncheckedIOException(e);
                             }
