@@ -19,16 +19,16 @@ if we can just use `__s_placeholder_`?
 🦊 In any modern language, underscore `_` is a valid name identifier,
 because of that we just employ it in the placeholder syntax.
 
-- [Java](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html#naming)
-- [JavaScritp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables)
-- [Python](https://www.w3schools.com/python/gloss_python_variable_names.asp)
-- [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/identifier-names)
-- [Golang](https://golang.org/ref/spec#Identifiers)
-- [Rust](https://doc.rust-lang.org/reference/identifiers.html)
-- [Ruby](https://ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/syntax.html#ident)
+- [Java](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html#naming),
+  [JavaScritp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables),
+  [Python](https://www.w3schools.com/python/gloss_python_variable_names.asp),
+  [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/identifier-names),
+  [Golang](https://golang.org/ref/spec#Identifiers),
+  [Rust](https://doc.rust-lang.org/reference/identifiers.html),
+  [Ruby](https://ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/syntax.html#ident)
 
-🧠 But Snip is not limited to programming languages. We are able to scaffold
-any file that is not binary.
+🧠 But Snip is not limited only to programming languages. We are able to
+process any file that is not binary.
 
 > can you imagine the possibilities?
 
