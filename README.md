@@ -44,11 +44,48 @@ any file that is not binary.
 
 ## Getting Stated
 
+### Install
+
 TODO
+
+### Scaffold
+
+
+- From remote templation hosted in Github:
+```bash
+# TODO
+```
+
+- If you have a templation int the local file system:
+```bash
+# TODO
+```
+
+### Build
+
+- 🎈 Build your brand new app
+```bash
+# TODO
+```
+
+- 🧰 Open it in your favorite IDE . . .
 
 ## Placeholders
 
-TODO
+Every placeholder must follow this pattern:
+- `__[0-9a-zA-Z]+_[0-9a-zA-Z]+_`
+
+Simplifing:
+- valid ones:
+  - `__c_myplaceholder_`
+  - `__cd_SomePlaceHolder_`
+  - `__cde_place0_`
+  - `__AB_Place90_`
+- non-valid ones:
+  - `__c_place-holder_`
+  - `_d_placeholder_`
+  - `__e_place holder_`
+  - `__aplaceholder_`
 
 ### Custom
 
