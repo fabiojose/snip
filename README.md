@@ -50,7 +50,6 @@ TODO
 
 ### Scaffold
 
-
 - From remote templation hosted in Github:
 ```bash
 # TODO
@@ -112,7 +111,7 @@ public class __d_domain_Get{
 
 #### Processing of `__s_namespace_`
 
-When `__s_namespace_` is used in the directories names, there is a special
+When `__s_namespace_` is used in directories names, there is a special
 processing.
 
 __Example__:
@@ -137,7 +136,22 @@ new directory structure will be:
 
 ### Custom Placeholders
 
-TODO
+As long as you follow the [placeholder pattern](#placeholders) and do not use
+any [build-in placeholders](#build-in-placeholders), you may define your own
+placeholders.
+
+You must to make it clear in the templation doc, what is the placeholder name
+and the expected values.
+
+To pass your custom placeholder to Snip scaffold is so simple, use the `-p`
+option as many as you want.
+
+```bash
+snip c \
+  -p '__c_comment_=Some comments to use' \
+  -p "__c_author_=$USER" \
+  -p '__c_domain=payments'melissa
+```
 
 ## How to Create a Templation?
 
