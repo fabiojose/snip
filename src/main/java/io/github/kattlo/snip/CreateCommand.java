@@ -3,6 +3,7 @@ package io.github.kattlo.snip;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import io.github.kattlo.snip.context.Context;
 import io.github.kattlo.snip.processor.Processor;
@@ -216,19 +219,38 @@ public class CreateCommand implements Runnable {
         parameterValues.putAll(custom);
     }
 
-    private Path checkout() throws IOException {
+    private Path checkout() throws IOException, URISyntaxException {
 
         Path target = null;
 
         if(null!= this.remoteTemplate){
+            log.debug("Clonning the remote reposisoty {}", this.remoteTemplate);
 
+            this.remoteTemplate.getFile();
+            target = Path.of("/tmp", "snip" + remoteTemplate.getFile());
+            FileUtils.deleteQuietly(target.toFile());
+            Files.createDirectories(target);
+
+            try{
+                Git.cloneRepository()
+                    .setURI(remoteTemplate.toURI().toString())
+                    .setDirectory(target.toFile())
+                    .call();
+
+                log.debug("templation clonned to {}", target);
+
+            }catch(GitAPIException e) {
+                throw new CommandLine.ExecutionException(spec.commandLine(),
+                    e.getMessage(), e);
+            }
+                
         } else {
         
             target = Path.of("/tmp", "snip/" + this.localTemplate.getName());
             Files.createDirectories(target);
 
             FileUtils.copyDirectory(this.localTemplate, target.toFile(), false);
-            log.debug("template copied to {}", target);
+            log.debug("templation copied to {}", target);
             
         }
 
@@ -263,7 +285,7 @@ public class CreateCommand implements Runnable {
             // process file content parameters
             Processor.forContent().process(context);
 
-        }catch(IOException e){
+        }catch(IOException | URISyntaxException e){
             throw new CommandLine.ExecutionException(spec.commandLine(),
                 e.getMessage(), e);
         }

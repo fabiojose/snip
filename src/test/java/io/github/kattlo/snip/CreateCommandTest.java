@@ -622,12 +622,38 @@ public class CreateCommandTest {
     }
 
     @Test
-    public void should_process_many_placeholder_occurrences_in_file_content() {
+    public void should_checkout_remote_template_to_directory() {
 
+        // setup
+        var expected = Path.of("/tmp/snip", "fabiojose/dipower-ex.git");
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-20",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", "fabiojose/dipower-ex",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(0, exitno);
+        assertTrue(expected.toFile().exists());
+
+        assertFalse(
+            FileUtils.listFiles(expected.toFile(),
+                TrueFileFilter.INSTANCE,
+                TrueFileFilter.INSTANCE).isEmpty()
+        );
     }
 
     @Test
-    public void should_checkout_remote_template_to_directory() {
+    public void should_process_many_placeholder_occurrences_in_file_content() {
 
     }
 }
