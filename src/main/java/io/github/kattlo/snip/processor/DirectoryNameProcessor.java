@@ -28,7 +28,7 @@ public class DirectoryNameProcessor implements Processor {
 
     private void processNamespace(Path folder, Context ctx) {
 
-        var dirtree = ctx.getNamespace().replaceAll("\\.", File.separator);
+        var dirtree = ctx.getNamespace().replaceAll("\\.", UNIX_FILE_SEPARATOR);
         log.debug("Directory tree from namespace {}", dirtree);
 
         var newFolder = Path.of(folder.toString().replaceAll(Context.NAMESPACE_PARAM, dirtree));
