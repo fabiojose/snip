@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import io.github.kattlo.snip.context.Context;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DirectoryNameProcessor implements Processor {
+
+    private static final String UNIX_FILE_SEPARATOR = "/";
 
     DirectoryNameProcessor(){}
 
@@ -66,7 +69,7 @@ public class DirectoryNameProcessor implements Processor {
 
     @Override
     public void process(Context context) {
-        
+
         try {
             var folders = Files.walk(context.getTarget())
                 .filter(Files::isDirectory)
@@ -79,8 +82,10 @@ public class DirectoryNameProcessor implements Processor {
                 )
                 .sorted((p1, p2) -> 
                     // deepest paths first
-                    p2.toString().split(File.separator).length
-                    - p1.toString().split(File.separator).length
+                    FilenameUtils.separatorsToUnix(
+                        p2.toString()).split(UNIX_FILE_SEPARATOR).length
+                    - FilenameUtils.separatorsToUnix(
+                        p1.toString()).split(UNIX_FILE_SEPARATOR).length
                 )
                 .peek(f -> log.debug("Folder to process {}", f))
                 .collect(Collectors.toList());
