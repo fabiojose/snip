@@ -31,6 +31,10 @@ import picocli.CommandLine.Model.CommandSpec;
  */
 @Command(
     name = "create",
+    aliases = {
+        "c",
+        "scaffold"
+    },
     description = "To create app based on template",
     mixinStandardHelpOptions = true
 )
