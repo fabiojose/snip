@@ -61,7 +61,7 @@ public class IncludeTest {
         var include = Include.create(file);
 
         // act
-        var actual = include.folder(Path.of("./src/test/resources/example/build"));
+        var actual = include.folder(Path.of("./src/test/resources/example/build/tmp"));
 
         // assert
         assertFalse(actual);
