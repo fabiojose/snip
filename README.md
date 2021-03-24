@@ -14,7 +14,7 @@ Snip and scaffold now a new application.
 start our programming
 
 💡 Why use `${placeholder}`, `{{placeholder}}` or `[placeholder]`
-if we can just use `__s_placeholder_`? 
+if we can just use `__s_placeholder_`?
 
 🦊 In any modern language, underscore `_` is a valid name identifier,
 because of that we just employ it in the placeholder syntax.
@@ -55,7 +55,7 @@ TODO
 # TODO
 ```
 
-- If you have a templation int the local file system:
+- If you have a templation int the localhost file system:
 ```bash
 # TODO
 ```
@@ -103,7 +103,7 @@ public class __d_domain_Get{
 }
 ```
 
-### Build-in Placeholders
+### Built-in Placeholders
 
 - `__s_namespace_`: application's namespace or package
 - `__s_app_`: application's name
@@ -150,14 +150,18 @@ option as many as you want.
 snip c \
   -p '__c_comment_=Some comments to use' \
   -p "__c_author_=$USER" \
-  -p '__c_domain=payments'melissa
+  -p '__c_domain=payments'
 ```
 
 ## How to Create a Templation?
 
 TODO
 
-## Required Options
+### Configuration
+
+TODO
+
+### Post Scripts
 
 TODO
 
@@ -181,14 +185,19 @@ The application is now runnable using `java -jar build/quarkus-app/quarkus-run.j
 
 ### Creating a native executable
 
-You can create a native executable using: 
+You can create a native executable using:
 ```shell script
-./gradlew build -Dquarkus.package.type=native
+./gradlew clean build
+  -Dquarkus.package.type=native \
+  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$'
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
 ```shell script
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+./gradlew clean build \
+  -Dquarkus.package.type=native \
+  -Dquarkus.native.container-build=true \
+  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$'
 ```
 
 You can then execute your native executable with: `./build/code-with-quarkus-1.0.0-SNAPSHOT-runner`
@@ -198,7 +207,7 @@ If you want to learn more about building native executables, please consult http
 ## Related guides
 
 - Picocli ([guide](https://quarkus.io/guides/picocli)): Develop command line applications with Picocli
- 
+
 ## Notes
 
 - <div>Snip icon made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
