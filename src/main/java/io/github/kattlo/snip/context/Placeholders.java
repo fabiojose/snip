@@ -56,7 +56,6 @@ public class Placeholders {
     @Getter(AccessLevel.MODULE)
     private Map<String, String> placeholders;
 
-    // TODO validate custom placeholders patterns
     @Getter(AccessLevel.MODULE)
     private Map<String, String> customPlaceholders;
 
