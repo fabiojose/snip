@@ -625,7 +625,7 @@ public class CreateCommandTest {
     public void should_checkout_remote_template_to_directory() {
 
         // setup
-        var expected = Path.of("/tmp/snip", "fabiojose/dipower-ex.git");
+        var expected = Path.of("/tmp/snip", "fabiojose/dipower-ex/fabiojose-dipower-ex-fd00990");
 
         String[] args = {
             "create",
@@ -650,6 +650,26 @@ public class CreateCommandTest {
                 TrueFileFilter.INSTANCE,
                 TrueFileFilter.INSTANCE).isEmpty()
         );
+    }
+
+    @Test
+    public void should_throw_when_custom_placeholder_does_not_follow_the_rule() {
+
+    }
+
+    @Test
+    public void should_throw_when_strict_and_absent_custom_placeholder() {
+
+    }
+
+    @Test
+    public void should_throw_when_builtin_placeholder_does_not_follow_the_rule() {
+
+    }
+
+    @Test
+    public void should_be_ok_when_lenient_and_absend_custom_placeholder() {
+
     }
 
     @Test

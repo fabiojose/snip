@@ -1,27 +1,24 @@
 package io.github.kattlo.snip;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import io.github.kattlo.snip.context.Context;
+import io.github.kattlo.snip.context.IllegalPlaceholderException;
+import io.github.kattlo.snip.context.Placeholders;
+import io.github.kattlo.snip.context.ReservedPlaceholderException;
 import io.github.kattlo.snip.processor.Processor;
+import io.github.kattlo.snip.templation.ConfigurationLoader;
+import io.github.kattlo.snip.templation.ScriptExecutor;
+import io.github.kattlo.snip.templation.TemplationFetcher;
+import io.github.kattlo.snip.templation.TemplationNotFoundException;
+import io.github.kattlo.util.JSONUtil;
+import io.github.kattlo.util.Reporter;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -44,30 +41,19 @@ import picocli.CommandLine.Model.CommandSpec;
 @Slf4j
 public class CreateCommand implements Runnable {
 
-    private static final List<String> RESERVED_WORDS = List.of(
-        Context.APP_PARAM,
-        Context.VERSION_PARAM,
-        Context.NAMESPACE_PARAM
-    );
-
-    private static final Pattern LOCAL_TEMPLATE = 
-        Pattern.compile("^file:/.+$");
-    
     @Spec
     CommandSpec spec;
 
+    private Reporter reporter = Reporter.create();
     private Path directory;
     private String appname;
-    private String version;
-    private String namespace;
-    private File localTemplate;
-    private URL remoteTemplate;
-
-    private Map<String, String> parameterValues = new HashMap<>();
+    private TemplationFetcher fetcher;
+    private final Placeholders.PlaceholdersBuilder placeholders =
+        Placeholders.builder();
 
     private void validate(String value, String argName) {
 
-        if(!Context.OPTION_PATTERN.matcher(value).matches()){
+        if(!Placeholders.OPTION_PATTERN.matcher(value).matches()){
             throw new CommandLine.ParameterException(spec.commandLine(),
                 "Invalid value of " + argName);
         }
@@ -108,7 +94,7 @@ public class CreateCommand implements Runnable {
         validate(appname, "--app-name");
         this.appname = appname;
 
-        parameterValues.put(Context.APP_PARAM, this.appname);
+        placeholders.appname(appname);
     }
 
     @Option(
@@ -123,9 +109,7 @@ public class CreateCommand implements Runnable {
     )
     public void setVersion(String version){
         validate(version, "--app-version");
-        this.version = version;
-
-        parameterValues.put(Context.VERSION_PARAM, this.version);
+        placeholders.version(version);
     }
 
     @Option(
@@ -136,49 +120,37 @@ public class CreateCommand implements Runnable {
         },
         description = "The namespace or package of the app to create",
         descriptionKey = "namespace",
+        showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+        defaultValue = "com.example",
         required = true
     )
     public void setNamespace(String namespace){
         validate(namespace, "--app-namespace");
-        this.namespace = namespace;
-
-        parameterValues.put(Context.NAMESPACE_PARAM, this.namespace);
+        placeholders.namespace(namespace);
     }
 
     @Option(
         names = {
             "-t",
+            "--templation",
             "--template"
         },
-        description = "The template to create the app",
-        descriptionKey = "template",
+        description = "The templation to create the app",
+        descriptionKey = "templation",
         required = true
     )
-    public void setTemplate(URI template) {
-        if(LOCAL_TEMPLATE.matcher(template.toString()).matches()){
-            this.localTemplate = new File(template);
-            if(!this.localTemplate.exists()){
-                throw new CommandLine.ParameterException(spec.commandLine(),
-                    "Local template not found at " + this.localTemplate);
-            }
-            log.debug("using template from local at: {}", this.localTemplate);
-        } else {
-            try {
-                this.remoteTemplate = new URL("https://github.com/" + template + ".git");
-                var https = (HttpsURLConnection)this.remoteTemplate.openConnection();
-                https.setRequestMethod("HEAD");
+    public void setTemplation(URI templation) {
 
-                if(HttpsURLConnection.HTTP_OK != https.getResponseCode()){
-                    throw new CommandLine.ParameterException(spec.commandLine(),
-                        "Remote template not found at " + this.remoteTemplate);
-                }
-
-                log.debug("using template from remote at: {}", this.remoteTemplate);
-            }catch(IOException e) {
-                throw new CommandLine.ParameterException(spec.commandLine(),
-                    "Unable to connect to remote template", e);
-            }
+        try {
+            this.fetcher = TemplationFetcher.create(templation);
+        }catch(IOException e) {
+            throw new CommandLine.ParameterException(spec.commandLine(),
+                    "Unable to reach the templation location", e);
+        }catch(TemplationNotFoundException e) {
+            throw new CommandLine.ParameterException(spec.commandLine(),
+                    "Templation not found", e);
         }
+
     }
 
     @Option(
@@ -189,80 +161,15 @@ public class CreateCommand implements Runnable {
         paramLabel = "__my_param_=my-value"
     )
     public void setParameters(String[] parameters) {
-        var invalid = 
-            Arrays.asList(parameters).stream()
-                .filter(p -> !Context.PARAM_PATTERN.matcher(p).matches())
-                .collect(Collectors.toList());
-
-        if(!invalid.isEmpty()){
-            throw new CommandLine.ParameterException(spec.commandLine(),
-                "Some custom parameters are invalid " + invalid);
-        }
-
-        var reserved = Arrays.asList(parameters).stream()
-            .map(p -> p.split("="))
-            .map(p -> p[0])
-            .filter(RESERVED_WORDS::contains)
-            .collect(Collectors.toList());
-
-        if(!reserved.isEmpty()){
-            throw new CommandLine.ParameterException(spec.commandLine(),
-                "Some custom parameters contains reserved words " + reserved);
-        }
-
-        var custom = 
-            Arrays.asList(parameters).stream()
-                .map(p -> p.split("="))
-                .collect(Collectors.toMap((p) -> p[0], (p) -> p[1]));
-
-        // add custom parameters to placeholders
-        parameterValues.putAll(custom);
-    }
-
-    private Path checkout() throws IOException, URISyntaxException {
-
-        Path target = null;
-
-        if(null!= this.remoteTemplate){
-            log.debug("Clonning the remote reposisoty {}", this.remoteTemplate);
-
-            this.remoteTemplate.getFile();
-            target = Path.of("/tmp", "snip" + remoteTemplate.getFile());
-            FileUtils.deleteQuietly(target.toFile());
-            Files.createDirectories(target);
-
-            try{
-                Git.cloneRepository()
-                    .setURI(remoteTemplate.toURI().toString())
-                    .setDirectory(target.toFile())
-                    .call();
-
-                log.debug("templation clonned to {}", target);
-
-            }catch(GitAPIException e) {
-                throw new CommandLine.ExecutionException(spec.commandLine(),
-                    e.getMessage(), e);
-            }
-                
-        } else {
-        
-            target = Path.of("/tmp", "snip/" + this.localTemplate.getName());
-            Files.createDirectories(target);
-
-            FileUtils.copyDirectory(this.localTemplate, target.toFile(), false);
-            log.debug("templation copied to {}", target);
-            
-        }
-
-        return target;
+        placeholders.parameters(Arrays.asList(parameters));
     }
 
     @Override
     public void run() {
-    
+
         try{
             // checkout to /tmp/snip/
-            var template = checkout();
+            var template = fetcher.fetch();
 
             // copy to --directory
             var appdir = Path.of(directory.toString(), appname);
@@ -270,11 +177,19 @@ public class CreateCommand implements Runnable {
             FileUtils.copyDirectory(template.toFile(), appdir.toFile());
             log.debug("template copied to app directory at {}", appdir);
 
+            // load .snip.yml, if any
+            var config = ConfigurationLoader.load(appdir);
+
+            // custom placeholder rules, if any
+            config.
+                flatMap(c -> JSONUtil.pointer(c).asObject("#/placeholders"))
+                .ifPresent(placeholders::rules);
+
             // remove .git folder (if exists)
             var gitdir = Path.of(appdir.toString(), ".git");
             FileUtils.deleteDirectory(gitdir.toFile());
 
-            var context = Context.create(parameterValues, template, appdir);
+            var context = Context.create(placeholders.build(), template, appdir);
 
             // process folders parameters
             Processor.forDirectories().process(context);;
@@ -285,9 +200,22 @@ public class CreateCommand implements Runnable {
             // process file content parameters
             Processor.forContent().process(context);
 
+            // run post script, if any
+            config
+                .flatMap(c -> JSONUtil.pointer(c).asObject("#/post/script"))
+                .ifPresent(script ->
+                    ScriptExecutor.create(script, appdir).execute());
+
+            reporter.success("New app created at: " + appdir);
+
         }catch(IOException | URISyntaxException e){
             throw new CommandLine.ExecutionException(spec.commandLine(),
                 e.getMessage(), e);
+        }catch(ReservedPlaceholderException | IllegalPlaceholderException e){
+            throw new CommandLine.ParameterException(spec.commandLine(),
+                e.getMessage(), e);
+        }finally{
+            // TODO delete appdir when there is errors
         }
 
     }
