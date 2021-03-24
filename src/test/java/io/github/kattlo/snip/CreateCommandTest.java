@@ -34,7 +34,9 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__s_namespace_=a.namespace"
+            "-p", "__s_namespace_=a.namespace",
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -58,7 +60,9 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "my invalid param=with value"
+            "-p", "my invalid param=with value",
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -81,7 +85,9 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
-            "--template", "file:/path/not/exists"
+            "--template", "file:/path/not/exists",
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -103,7 +109,9 @@ public class CreateCommandTest {
             "-a", "app-name",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
-            "--template", "fabiojose/unknown"
+            "--template", "fabiojose/unknown",
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -126,6 +134,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0-SNAPSHOT",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -148,6 +158,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "$no-a-version",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -170,6 +182,8 @@ public class CreateCommandTest {
             "--app-namespace", "My Invalid Namespace",
             "--app-version", "1.0.0-SNAPSHOT",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -192,6 +206,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -216,6 +232,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -248,6 +266,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -279,6 +299,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -305,6 +327,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -330,6 +354,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -355,6 +381,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -380,6 +408,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -411,6 +441,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -436,6 +468,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -467,6 +501,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -498,7 +534,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=MyDomain"
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -524,7 +561,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=MyDomain"
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -550,7 +588,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=MyDomain"
+            "-p", "__c_domain_=MyDomain",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -576,7 +615,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=Custom"
+            "-p", "__c_domain_=Custom",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -602,7 +642,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_custom_=Some Text"
+            "-p", "__c_custom_=Some Text",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -662,7 +703,8 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=incorrect"
+            "-p", "__c_domain_=incorrect",
+            "-p", "__c_author_=fabiojose"
         };
 
         var command = new CommandLine(entry);
@@ -677,6 +719,24 @@ public class CreateCommandTest {
     @Test
     public void should_throw_when_strict_and_absent_custom_placeholder() {
 
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-22",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            //"-p", "__c_author=fabiojose",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(1, exitno);
     }
 
     @Test
@@ -691,6 +751,11 @@ public class CreateCommandTest {
 
     @Test
     public void should_process_many_placeholder_occurrences_in_file_content() {
+
+    }
+
+    @Test
+    public void should_remove_app_dir_when_exit_non_zero() {
 
     }
 }
