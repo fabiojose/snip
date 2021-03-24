@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
 
@@ -643,6 +644,7 @@ public class CreateCommandTest {
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_custom_=Some Text",
+            "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose"
         };
 
@@ -740,22 +742,33 @@ public class CreateCommandTest {
     }
 
     @Test
-    public void should_throw_when_builtin_placeholder_does_not_follow_the_rule() {
-
-    }
-
-    @Test
     public void should_be_ok_when_lenient_and_absend_custom_placeholder() {
-
-    }
-
-    @Test
-    public void should_process_many_placeholder_occurrences_in_file_content() {
 
     }
 
     @Test
     public void should_remove_app_dir_when_exit_non_zero() {
 
+        var expected = Path.of(directory, "app-name-23/");
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-23",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            //"-p", "__c_author_=fabiojose",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(1, exitno);
+        assertFalse(Files.exists(expected));
     }
 }

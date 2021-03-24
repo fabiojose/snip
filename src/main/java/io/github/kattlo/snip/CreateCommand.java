@@ -167,12 +167,11 @@ public class CreateCommand implements Runnable {
     @Override
     public void run() {
 
+        boolean succcess = false;
+        var appdir = Path.of(directory.toString(), appname);
         try{
             // checkout to /tmp/snip/
             var template = fetcher.fetch();
-
-            // copy to --directory
-            var appdir = Path.of(directory.toString(), appname);
 
             FileUtils.copyDirectory(template.toFile(), appdir.toFile());
             log.debug("template copied to app directory at {}", appdir);
@@ -207,6 +206,7 @@ public class CreateCommand implements Runnable {
                     ScriptExecutor.create(script, appdir).execute());
 
             reporter.success("New app created at: " + appdir);
+            succcess = true;
 
         }catch(IOException | URISyntaxException e){
             throw new CommandLine.ExecutionException(spec.commandLine(),
@@ -215,7 +215,14 @@ public class CreateCommand implements Runnable {
             throw new CommandLine.ParameterException(spec.commandLine(),
                 e.getMessage(), e);
         }finally{
-            // TODO delete appdir when there is errors
+            // delete appdir when there no success
+            if(!succcess){
+                try{
+                    FileUtils.deleteDirectory(appdir.toFile());
+                }catch(IOException e) {
+                    System.err.println("Can not delete " + appdir);
+                }
+            }
         }
 
     }

@@ -133,7 +133,7 @@ public class Placeholders {
 
             var missing = customRules.entrySet()
                 .stream()
-                .filter(kv -> result.customPlaceholders.containsKey(kv.getKey()))
+                .filter(kv -> !result.customPlaceholders.containsKey(kv.getKey()))
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
 
