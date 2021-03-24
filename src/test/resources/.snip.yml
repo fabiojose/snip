@@ -1,0 +1,19 @@
+description: |
+  Describe your templation
+placeholders:
+  strict: yes # will check if custom placeholders are present and valid against the pattern
+  spec:
+    - name: __c_author_
+      pattern: ".+"
+      label: Author Name
+    - name: __c_domain_
+      pattern: '[A-Z][\w]+'
+      label: Class name for Domain
+post:
+  script:
+    linux: # base directory is the appdir
+      - mkdir test_script
+      - echo linux
+    windows:
+      - mkdir test_script
+      - echo windows

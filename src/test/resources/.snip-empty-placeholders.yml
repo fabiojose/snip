@@ -1,0 +1,11 @@
+description: |
+  Describe your templation
+placeholders: {}
+post:
+  script:
+    linux:
+      - ls 
+      - echo linux
+    windows:
+      - dir
+      - echo windows
