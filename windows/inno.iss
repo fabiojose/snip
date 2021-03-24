@@ -18,7 +18,7 @@ Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "A
 
 [Files]
 Source: "..\snip.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\VCRUNTIME140.dll"; DestDir "{sys}"
+Source: "..\VCRUNTIME140.dll"; DestDir: "{sys}"
 
 [Icons]
 Name: "{group}\Snip"; Filename: "{app}\snip.exe"
