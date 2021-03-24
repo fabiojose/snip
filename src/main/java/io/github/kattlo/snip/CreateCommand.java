@@ -218,7 +218,8 @@ public class CreateCommand implements Runnable {
             // delete appdir when there no success
             if(!succcess){
                 try{
-                    FileUtils.forceDelete(appdir.toFile());
+                    // does not delete on windows
+                    FileUtils.forceDeleteOnExit(appdir.toFile());
                 }catch(IOException e) {
                     System.err.println("Can not delete " + appdir);
                 }
