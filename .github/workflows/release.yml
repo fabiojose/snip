@@ -256,7 +256,8 @@ jobs:
           graalvm-ce-java11-21.0.0.2\bin\gu.cmd install native-image
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
-          choco upgrade -y visualstudio2017-workload-vctools
+          choco install visualstudio2017buildtools -vy
+          choco install visualstudio2017-workload-vctools -vy
       - name: 'Get Version Number'
         id: get_version
         run: |
