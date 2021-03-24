@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.unix4j.Unix4j;
@@ -22,7 +23,7 @@ public class FileContentProcessor implements Processor {
 
     @Override
     public void process(Context context) {
-       
+
         try{
             Files.walk(context.getTarget())
                 .filter(context.getInclude()::it)
@@ -33,7 +34,7 @@ public class FileContentProcessor implements Processor {
                         var tmpDir = new File(FileUtils.getTempDirectory(), context.getPlaceholders().getAppname());
                         FileUtils.forceMkdir(tmpDir);
 
-                        var tmpFile = new File(tmpDir, f.toFile().getName());
+                        var tmpFile = new File(tmpDir, UUID.randomUUID().toString());
                         FileUtils.copyFile(f.toFile(), tmpFile, false);
 
                         var command = Unix4j.fromFile(tmpFile);
