@@ -221,6 +221,7 @@ public class CreateCommand implements Runnable {
                     FileUtils.forceDelete(appdir.toFile());
                 }catch(IOException e) {
                     System.err.println("Can not delete " + appdir);
+                    e.printStackTrace();
                 }
             }
         }
