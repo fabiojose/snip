@@ -62,7 +62,7 @@ public class Include {
                 .peek(f -> log.debug("Directory to ignore {}", f));
         }
 
-        return !stream.filter(f -> folder.toString().contains(f))
+        return !stream.filter(f -> folder.toString().replaceAll("\\", "/").contains(f))
                 .findFirst()
                 .isPresent();
     }
@@ -87,7 +87,7 @@ public class Include {
     }
 
     public static Include empty() {
-        
+
         var result = new Include();
         result.all = List.of();
         result.folders = List.of();
@@ -98,7 +98,7 @@ public class Include {
     }
 
     public static Include create(Path ignore) {
-     
+
         if(Files.exists(ignore)){
             try(var in = new BufferedReader(new FileReader(ignore.toFile()))){
 
