@@ -17,7 +17,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-picocli'
     implementation 'io.quarkus:quarkus-arc'
 
-    implementation 'org.yaml:snakeyaml:1.27'
+    implementation 'org.yaml:snakeyaml:1.28'
     implementation 'org.unix4j:unix4j-command:0.5'
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'net.lingala.zip4j:zip4j:2.7.0'
