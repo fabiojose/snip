@@ -288,6 +288,15 @@ jobs:
         run: |
           Compress-Archive -Path VCRUNTIME140.dll, snip.exe -CompressionLevel Optimal -DestinationPath snip-${{steps.get_version.outputs.VERSION}}-windows.zip
 
+      - name: Inno Setup
+        run: |
+          "%programfiles(x86)%\Inno Setup 6\iscc.exe" "windows\inno.iss"
+        shell: cmd
+
+      - name: Verbose
+        run: dir
+        shell: cmd
+
       - name: 'Get Release URL'
         if: contains(github.ref, 'v')
         uses: actions/download-artifact@v2-preview
