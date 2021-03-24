@@ -45,6 +45,9 @@ public class FileContentProcessor implements Processor {
                                 command.sed(SedOption.substitute, ph.getKey(), ph.getValue());
                             });
 
+                        // delete file before the sed output
+                        FileUtils.forceDelete(f.toFile());
+
                         command.toFile(f.toFile());
 
                     }catch(IOException e){
