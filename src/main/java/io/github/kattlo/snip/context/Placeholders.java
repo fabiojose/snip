@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -103,7 +104,7 @@ public class Placeholders {
             .stream()
             .map(p -> p.split(EQUALS))
             .collect(Collectors.toMap((p) -> p[0], (p) -> p[1]));
-        log.debug("custom placeholders {}", result.customPlaceholders);
+        log.info("custom placeholders {}", result.customPlaceholders);
 
         result.placeholders.putAll(result.customPlaceholders);
         result.placeholders = Collections.unmodifiableMap(result.placeholders);
@@ -112,7 +113,6 @@ public class Placeholders {
         result.version = Objects.requireNonNull(version);
         result.namespace = Objects.requireNonNull(namespace);
 
-        // TODO test this!
         var customRules = Optional.ofNullable(rules)
             .flatMap(r -> JSONUtil.pointer(r).asArray("#/spec"))
             .map(JSONArray::toList)
@@ -127,12 +127,21 @@ public class Placeholders {
         var customStrict = Optional.ofNullable(rules)
             .flatMap(r -> JSONUtil.pointer(r).asBoolean("#/strict"))
             .orElseGet(() -> Boolean.TRUE);
+        log.info("custom placeholder strict: {}", customStrict);
 
         if(customStrict) {
-            // TODO validate the present placeholders
 
-            // TODO validate if any of the is absend
+            var missing = customRules.entrySet()
+                .stream()
+                .filter(kv -> result.customPlaceholders.containsKey(kv.getKey()))
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
 
+            // validate if any of the is absend
+            if(!missing.isEmpty()){
+                log.debug("missing custom placeholders {}", missing);
+                throw new MissingPlaceholderException(missing.toString());
+            }
         }
 
         // validate just the present placeholders

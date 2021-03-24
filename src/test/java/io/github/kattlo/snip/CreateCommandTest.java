@@ -727,7 +727,7 @@ public class CreateCommandTest {
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
-            //"-p", "__c_author=fabiojose",
+            //"-p", "__c_author_=fabiojose",
         };
 
         var command = new CommandLine(entry);
