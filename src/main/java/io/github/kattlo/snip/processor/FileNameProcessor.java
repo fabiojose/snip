@@ -35,17 +35,18 @@ public class FileNameProcessor implements Processor {
     @Override
     public void process(Context context) {
         try{
-        Files.walk(context.getTarget())
+          Files.walk(context.getTarget())
             .filter(context.getInclude()::it)
             .filter(Files::isRegularFile)
             .filter(file -> 
-                context.getPlaceholders().keySet().stream()
+                context.getPlaceholders().entries().keySet().stream()
                     .filter(placeholder -> file.toString().contains(placeholder))
                     .findAny()
                     .isPresent()
             )
+            .peek(f -> log.debug("File to process {}", f))
             .forEach(f -> 
-                context.getPlaceholders().entrySet().stream()
+                context.getPlaceholders().entries().entrySet().stream()
                     .filter(kv -> f.toString().contains(kv.getKey()))
                     .forEach(placeholder -> 
                         processFileName(placeholder, f)

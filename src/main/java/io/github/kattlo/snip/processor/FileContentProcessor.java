@@ -30,7 +30,7 @@ public class FileContentProcessor implements Processor {
                 .peek(f -> log.debug("File to process its content {}", f.toAbsolutePath()))
                 .forEach(f -> {
                     try{
-                        var tmpDir = new File(FileUtils.getTempDirectory(), context.getAppname());
+                        var tmpDir = new File(FileUtils.getTempDirectory(), context.getPlaceholders().getAppname());
                         FileUtils.forceMkdir(tmpDir);
 
                         var tmpFile = new File(tmpDir, f.toFile().getName());
@@ -38,7 +38,7 @@ public class FileContentProcessor implements Processor {
 
                         var command = Unix4j.fromFile(tmpFile);
 
-                        context.getPlaceholders().entrySet().stream()
+                        context.getPlaceholders().entries().entrySet().stream()
                             .peek(ph -> log.debug("Placeholder for file content {}", ph))
                             .forEach(ph -> {
                                 command.sed(SedOption.substitute, ph.getKey(), ph.getValue());

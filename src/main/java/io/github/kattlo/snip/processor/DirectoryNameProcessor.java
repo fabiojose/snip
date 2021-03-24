@@ -11,8 +11,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.apache.commons.io.filefilter.FileFileFilter;
 
 import io.github.kattlo.snip.context.Context;
+import io.github.kattlo.snip.context.Placeholders;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,14 +30,47 @@ public class DirectoryNameProcessor implements Processor {
 
     private void processNamespace(Path folder, Context ctx) {
 
-        var dirtree = ctx.getNamespace().replaceAll("\\.", UNIX_FILE_SEPARATOR);
-        log.debug("Directory tree from namespace {}", dirtree);
+        var dirtree = ctx.getPlaceholders().getNamespace()
+            .replaceAll("\\.", UNIX_FILE_SEPARATOR);
 
-        var newFolder = Path.of(folder.toString().replaceAll(Context.NAMESPACE_PARAM, dirtree));
-        log.debug("New directory hierarchy to create {}", newFolder);
+        log.debug("Namespace: Directory tree {}", dirtree);
+
+        var target = Path.of(folder.toString().replaceAll(Context.NAMESPACE_PARAM, dirtree));
 
         try {
-            FileUtils.moveDirectory(folder.toFile(), newFolder.toFile());
+            if(!Files.exists(target)){
+                log.debug("Namespace: new directory hierarchy to create {}", target);
+                    FileUtils.moveDirectory(folder.toFile(), target.toFile());
+            } else {
+                log.debug("Namespace: directory already exists (copy the content) {}",
+                    target);
+
+                // move resources to existing target
+                FileUtils.listFiles(folder.toFile(), FileFileFilter.FILE,
+                        DirectoryFileFilter.DIRECTORY)
+                    .forEach(f -> {
+                        try{
+                            if(f.isDirectory()){
+                                FileUtils.moveDirectoryToDirectory(f, target.toFile(), false);
+                            } else {
+                                FileUtils.moveFileToDirectory(f, target.toFile(), false);
+                            }
+                        }catch(IOException e){
+                            throw new UncheckedIOException(e);
+                        }
+                    });
+
+                // delete source folder, if empty
+                if(FileUtils.listFiles(folder.toFile(), 
+                    FileFileFilter.FILE, 
+                    DirectoryFileFilter.DIRECTORY)
+                        .isEmpty()){
+        
+                    FileUtils.deleteDirectory(folder.toFile());
+                    log.debug("Empty source directory deleted {}", folder);
+                    
+                }
+            }
         } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -42,12 +78,12 @@ public class DirectoryNameProcessor implements Processor {
 
     private void processFolder(Map<String, String> ph, Path folder) {
 
-        var matcher = Context.PLACEHOLDER_PATTERN.matcher(folder.toString());
+        var matcher = Placeholders.PLACEHOLDER_PATTERN.matcher(folder.toString());
         var found = "";
         while(matcher.find()){
             found = matcher.group(matcher.groupCount());
-            log.debug("Latest placeholder within {}: {}", folder, found);
         }
+        log.debug("Latest placeholder within {}: {}", folder, found);
 
         final var latest = found;
 
@@ -74,7 +110,7 @@ public class DirectoryNameProcessor implements Processor {
                 .filter(Files::isDirectory)
                 .filter(context.getInclude()::folder)
                 .filter(folder -> 
-                    context.getPlaceholders().keySet().stream()
+                    context.getPlaceholders().entries().keySet().stream()
                         .filter(placeholder -> folder.toString().contains(placeholder))
                         .findAny()
                         .isPresent()
@@ -99,7 +135,7 @@ public class DirectoryNameProcessor implements Processor {
 
                 } else {
 
-                    var placeholders = context.getPlaceholders().entrySet().stream()
+                    var placeholders = context.getPlaceholders().entries().entrySet().stream()
                         .filter(kv -> folder.toString().contains(kv.getKey()))
                         .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
