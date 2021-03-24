@@ -10,12 +10,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.kattlo.snip.templation.ConfigurationLoader;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author fabiojose
  */
 @Getter
+@Slf4j
 public class Include {
 
     static final List<String> ALWAYS_IGNORE_FOLDER = List.of(
@@ -23,7 +26,8 @@ public class Include {
     );
 
     static final List<String> ALWAYS_IGNORE_FILE = List.of(
-        Context.SNIP_IGNORE
+        Context.SNIP_IGNORE,
+        ConfigurationLoader.CONFIG_FILE_NAME
     );
 
     private List<String> all;
@@ -50,11 +54,17 @@ public class Include {
 
     public boolean folder(Path folder) {
 
-        return !folders.stream()
-            .map(f -> f.substring(0, f.length() -1))
-            .filter(f -> folder.toString().contains(f))
-            .findFirst()
-            .isPresent();
+        var stream = folders.stream();
+
+        if(Files.isDirectory(folder)){
+            stream = folders.stream()
+                .map(f -> f.substring(0, f.length() -1))
+                .peek(f -> log.debug("Directory to ignore {}", f));
+        }
+
+        return !stream.filter(f -> folder.toString().contains(f))
+                .findFirst()
+                .isPresent();
     }
 
     public boolean wildcard(Path resource) {
@@ -62,6 +72,7 @@ public class Include {
         return !wildcards.stream()
             .map(w -> w.substring(1))
             .filter(w -> resource.toString().endsWith(w))
+            .peek(w -> log.debug("Wildcard to ignore {}", w))
             .findAny()
             .isPresent();
     }
@@ -70,6 +81,7 @@ public class Include {
 
         return !files.stream()
             .filter(f -> file.toString().contains(f))
+            .peek(f -> log.debug("File to ignore {}", f))
             .findFirst()
             .isPresent();
     }
