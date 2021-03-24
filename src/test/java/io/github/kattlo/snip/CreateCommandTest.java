@@ -742,11 +742,6 @@ public class CreateCommandTest {
     }
 
     @Test
-    public void should_be_ok_when_lenient_and_absend_custom_placeholder() {
-
-    }
-
-    @Test
     public void should_remove_app_dir_when_exit_non_zero() {
 
         var expected = Path.of(directory, "app-name-23/");
@@ -770,5 +765,10 @@ public class CreateCommandTest {
         // assert
         assertEquals(1, exitno);
         assertFalse(Files.exists(expected));
+    }
+
+    @Test
+    public void should_be_ok_when_lenient_and_absend_custom_placeholder() {
+
     }
 }
