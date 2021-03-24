@@ -58,15 +58,15 @@ public class ConfigurationLoader {
 
         return YAML;
     }
-    
+
     public static Map<String, Object> loadAsMap(Path config) {
         Objects.requireNonNull(config);
 
-        try {
-            return getYamlLoader().load(new FileReader(config.toFile()));
+        try(var reader = new FileReader(config.toFile())) {
+            return getYamlLoader().load(reader);
         }catch(IOException e){
             throw new UncheckedIOException(e);
-        } 
+        }
     }
 
     private static String toStringifiedJSON(Map<String, Object> yaml) {
@@ -115,7 +115,7 @@ public class ConfigurationLoader {
         if(!Files.isDirectory(appdir)){
             throw new IllegalArgumentException("its not directory " + appdir);
         }
-        
+
         return loadFile(appdir.resolve(CONFIG_FILE_NAME));
     }
 }
