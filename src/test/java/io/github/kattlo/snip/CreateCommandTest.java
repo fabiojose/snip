@@ -30,7 +30,7 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "-a", "app-name",
+            "-a", "app-name-reserver-words",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
@@ -54,7 +54,7 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "-a", "app-name",
+            "-a", "app-name-does-not-follow",
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
@@ -144,7 +144,7 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "-a", "app-name",
+            "-a", "app-name-version-does-not",
             "--app-namespace", "my.namespace",
             "--app-version", "$no-a-version",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
@@ -166,7 +166,7 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "-a", "app-name",
+            "-a", "app-name-namespace-does-not-follow",
             "--app-namespace", "My Invalid Namespace",
             "--app-version", "1.0.0-SNAPSHOT",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
