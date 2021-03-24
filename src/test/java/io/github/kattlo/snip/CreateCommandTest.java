@@ -621,7 +621,7 @@ public class CreateCommandTest {
         }
     }
 
-    @Test
+    //@Test
     public void should_checkout_remote_template_to_directory() {
 
         // setup
