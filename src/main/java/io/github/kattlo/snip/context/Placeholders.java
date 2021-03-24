@@ -122,7 +122,7 @@ public class Placeholders {
             .map(o -> new Rule(o.get("name"), o.get("pattern"), o.get("label")))
             .collect(Collectors.toMap(Rule::getPlaceholder, r -> r));
 
-        log.info("custom placeholder rules {}", customRules);
+        log.debug("custom placeholder rules {}", customRules);
 
         var customStrict = Optional.ofNullable(rules)
             .flatMap(r -> JSONUtil.pointer(r).asBoolean("#/strict"))
