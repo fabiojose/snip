@@ -137,7 +137,7 @@ new directory structure will be:
 ### Custom Placeholders
 
 As long as you follow the [placeholder pattern](#placeholders) and do not use
-any [build-in placeholders](#build-in-placeholders), you may define your own
+any [built-in placeholders](#built-in-placeholders), you may define your own
 placeholders.
 
 You must to make it clear in the templation doc, what is the placeholder name
@@ -157,11 +157,11 @@ snip c \
 
 TODO
 
-### Configuration
+### `.snipignore`
 
 TODO
 
-### Post Scripts
+### `.snip.yml`
 
 TODO
 
@@ -173,6 +173,7 @@ The application can be packaged using:
 ```shell script
 ./gradlew build
 ```
+
 It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
 
