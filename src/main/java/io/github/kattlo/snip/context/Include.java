@@ -62,7 +62,8 @@ public class Include {
                 .peek(f -> log.debug("Directory to ignore {}", f));
         }
 
-        return !stream.filter(f -> folder.toString().replaceAll("\\", "/").contains(f))
+        return !stream.filter(f -> folder.toString()
+                    .replaceAll("\\\\", "/").contains(f))
                 .findFirst()
                 .isPresent();
     }
