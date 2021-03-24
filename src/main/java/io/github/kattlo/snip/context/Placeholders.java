@@ -67,6 +67,7 @@ public class Placeholders {
     private Map<String, String> customPlaceholdersRules;
 
     @Builder(toBuilder = true)
+    @SuppressWarnings("unchecked")
     private static Placeholders create(String appname, String version, String namespace,
         List<String> parameters, JSONObject rules){
 
