@@ -341,7 +341,7 @@ jobs:
 
       - name: 'Release Windows Setup'
         if: success() && contains(github.ref, 'v')
-        id: upload-release-asset
+        id: upload-release-setup
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
