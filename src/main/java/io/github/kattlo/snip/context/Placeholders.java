@@ -104,7 +104,7 @@ public class Placeholders {
             .stream()
             .map(p -> p.split(EQUALS))
             .collect(Collectors.toMap((p) -> p[0], (p) -> p[1]));
-        log.info("custom placeholders {}", result.customPlaceholders);
+        log.debug("custom placeholders {}", result.customPlaceholders);
 
         result.placeholders.putAll(result.customPlaceholders);
         result.placeholders = Collections.unmodifiableMap(result.placeholders);
@@ -127,7 +127,7 @@ public class Placeholders {
         var customStrict = Optional.ofNullable(rules)
             .flatMap(r -> JSONUtil.pointer(r).asBoolean("#/strict"))
             .orElseGet(() -> Boolean.TRUE);
-        log.info("custom placeholder strict: {}", customStrict);
+        log.debug("custom placeholder strict: {}", customStrict);
 
         if(customStrict) {
 
