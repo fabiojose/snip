@@ -7,6 +7,9 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -14,10 +17,15 @@ dependencies {
     implementation 'io.quarkus:quarkus-picocli'
     implementation 'io.quarkus:quarkus-arc'
 
-    implementation 'org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r'
     implementation 'org.yaml:snakeyaml:1.27'
     implementation 'org.unix4j:unix4j-command:0.5'
     implementation 'commons-io:commons-io:2.8.0'
+    implementation 'net.lingala.zip4j:zip4j:2.7.0'
+
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.2'
+    implementation 'org.zeroturnaround:zt-exec:1.12'
 
     testImplementation 'io.quarkus:quarkus-junit5'
 
@@ -57,4 +65,10 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled true
     }
+}
+
+task printClasspath {
+   doLast {
+       println sourceSets.main.runtimeClasspath.asPath
+   }
 }
