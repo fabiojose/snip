@@ -12,7 +12,7 @@ import lombok.ToString;
  * @author fabiojose
  */
 @EqualsAndHashCode(of = "placeholder")
-@ToString(of = "label")
+@ToString(of = {"label", "pattern"})
 public class Rule {
 
     @Getter
