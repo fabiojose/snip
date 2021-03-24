@@ -133,19 +133,19 @@ public class Placeholders {
 
             // TODO validate if any of the is absend
 
-        } else {
-            // validate just the present placeholders
-            result.placeholders.entrySet()
-                .stream()
-                .filter(kv -> customRules.containsKey(kv.getKey()))
-                .forEach(kv -> {
-                    log.debug("validating placeholder {}", kv);
-
-                    var rule = customRules.get(kv.getKey());
-                    rule.validate(kv.getValue());
-
-                });
         }
+
+        // validate just the present placeholders
+        result.placeholders.entrySet()
+            .stream()
+            .filter(kv -> customRules.containsKey(kv.getKey()))
+            .forEach(kv -> {
+                log.debug("validating placeholder {}", kv);
+
+                var rule = customRules.get(kv.getKey());
+                rule.validate(kv.getValue());
+
+            });
 
         return result;
     }

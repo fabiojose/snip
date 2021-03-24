@@ -489,7 +489,7 @@ public class CreateCommandTest {
     public void should_process_custom_parameters_in_folder_name() {
 
         // setup
-        var expected = Path.of(directory, "app-name-14/src/app-name-14/my-domain");
+        var expected = Path.of(directory, "app-name-14/src/app-name-14/MyDomain");
 
         String[] args = {
             "create",
@@ -498,7 +498,7 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=my-domain"
+            "-p", "__c_domain_=MyDomain"
         };
 
         var command = new CommandLine(entry);
@@ -515,7 +515,7 @@ public class CreateCommandTest {
     public void should_process_custom_parameters_in_folder_name_whith_more_text() {
 
         // setup
-        var expected = Path.of(directory, "app-name-16/src/app-name-16/domainController");
+        var expected = Path.of(directory, "app-name-16/src/app-name-16/MyDomainController");
 
         String[] args = {
             "create",
@@ -524,7 +524,7 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=domain"
+            "-p", "__c_domain_=MyDomain"
         };
 
         var command = new CommandLine(entry);
@@ -541,7 +541,7 @@ public class CreateCommandTest {
     public void should_process_custom_parameters_in_file_name() {
 
         // setup
-        var expected = Path.of(directory, "app-name-15/src/app-name-15/my-custom.txt");
+        var expected = Path.of(directory, "app-name-15/src/app-name-15/MyDomain.txt");
 
         String[] args = {
             "create",
@@ -550,7 +550,7 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=my-custom"
+            "-p", "__c_domain_=MyDomain"
         };
 
         var command = new CommandLine(entry);
@@ -567,7 +567,7 @@ public class CreateCommandTest {
     public void should_process_custom_parameters_in_file_name_with_more_text() {
 
         // setup
-        var expected = Path.of(directory, "app-name-17/src/app-name-17/customController/customDTO.java");
+        var expected = Path.of(directory, "app-name-17/src/app-name-17/CustomController/CustomDTO.java");
 
         String[] args = {
             "create",
@@ -576,7 +576,7 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__c_domain_=custom"
+            "-p", "__c_domain_=Custom"
         };
 
         var command = new CommandLine(entry);
@@ -655,6 +655,23 @@ public class CreateCommandTest {
     @Test
     public void should_throw_when_custom_placeholder_does_not_follow_the_rule() {
 
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-21",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "__c_domain_=incorrect"
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(1, exitno);
     }
 
     @Test
