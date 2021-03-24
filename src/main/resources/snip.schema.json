@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/kattlo/snip",
+  "title": "SnipConfiguration",
+  "description": "Snip configuration file",
+  "type": "object",
+  "definitions": {
+    "placeholder": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^__[0-9a-zA-Z]+_[0-9a-zA-Z]+_$"
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": ["name"],
+      "additionalItems": false
+    },
+    "placeholders":{
+      "type":"object",
+      "properties": {
+        "strict":{
+          "type":"boolean",
+          "default":true
+        },
+        "spec":{
+          "type":"array",
+          "items": {
+            "$ref": "#/definitions/placeholder"
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["strict", "spec"],
+      "additionalProperties": false
+    },
+    "script": {
+      "type": "object",
+      "properties": {
+        "linux": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "windows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": ["linux"]
+        },
+        {
+          "required": ["windows"]
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "placeholders": {
+      "$ref": "#/definitions/placeholders"
+    },
+    "post": {
+      "type": "object",
+      "properties": {
+        "script": {
+          "$ref": "#/definitions/script"
+        }
+      },
+      "required": ["script"],
+      "additionalItems": false
+    }
+  },
+  "required": ["description"],
+  "additionalItems": false
+}
