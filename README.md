@@ -38,7 +38,7 @@ process any file that is not binary.
 - have no special files
 - have at same time a template and an application
 - have a fancy name for templates: ❤️ __templation__ ❤️
-- are able to build and run our templation, naturally without any
+- are able to build and run our templation, naturally, without any
   kind of special tool or dependency
 - can easily refactor and update our templation
 
