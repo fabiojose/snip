@@ -1,0 +1,321 @@
+#thanks to https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-jar:
+    name: Runnable Jar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Get Version Number
+        id: get_version
+        run: |
+          echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+          echo ::set-output name=VERSION_BUILD::$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+
+      - name: Runnable Jar
+        run: |
+          ./gradlew test quarkusBuild --uber-jar
+          cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner.jar build/snip-${{steps.get_version.outputs.VERSION}}.jar
+
+      - name: Publish JAR
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: snip-${{steps.get_version.outputs.VERSION}}.jar
+          path: build/*.jar
+
+      - name: Create Release
+        if: contains(github.ref, 'v')
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: ${{github.ref}}
+          release_name: Release ${{github.ref}}
+          body: |
+            Initial release
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: contains(github.ref, 'v')
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: build/snip-${{steps.get_version.outputs.VERSION}}.jar
+          asset_name: snip-${{steps.get_version.outputs.VERSION}}-all.jar
+          asset_content_type: application/java-archive
+
+      - name: Write Upload URL To File
+        if: contains(github.ref, 'v')
+        run: |
+          echo "${{steps.create_release.outputs.upload_url}}" > upload_url.txt
+
+      - name: Publish Upload URL
+        if: contains(github.ref, 'v')
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'upload_url.txt'
+          path: 'upload_url.txt'
+
+  build-native-image:
+    name: Build Non-Windows Image
+    needs: [build-jar]
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest']
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+          - os: 'macos-latest'
+            label: 'mac'
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Setup GraalVM Environment
+        uses: DeLaGuardo/setup-graalvm@2.0
+        with:
+          graalvm-version: '20.2.0.java11'
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+      - name: Install Native Image Plugin
+        run: |
+          gu install native-image
+
+      - name: Get Version Number
+        id: get_version
+        run: |
+          echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+          echo ::set-output name=VERSION_BUILD::$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+
+      - name: Get JAR Artifact
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: snip-${{steps.get_version.outputs.VERSION}}.jar
+
+      - name: 'Get Release URL'
+        if: contains(github.ref, 'v')
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: 'upload_url.txt'
+
+      - name: 'Get Upload URL'
+        id: get_url
+        if: contains(github.ref, 'v')
+        run: |
+          echo ::set-output name=UPLOAD_URL::$(cat upload_url.txt)
+
+      - name: Build Native
+        run: |
+          ./gradlew clean build --no-daemon -Dquarkus.package.type=native \
+            -Dquarkus.native.container-build=false \
+            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$',--no-fallback
+
+      - name: Copy Natine Artifact
+        if: success()
+        shell: bash
+        run: |
+          cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner snip-${{steps.get_version.outputs.VERSION}}
+          cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner snip
+
+      - name: Publish Native Image
+        if: success()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'snip-${{steps.get_version.outputs.VERSION}}-${{matrix.label}}'
+          path: 'snip-${{steps.get_version.outputs.VERSION}}'
+
+      - name: Release Native Image Asset
+        if: success() && contains(github.ref, 'v')
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.get_url.outputs.UPLOAD_URL}}
+          asset_name: 'snip-${{steps.get_version.outputs.VERSION}}-${{matrix.label}}'
+          asset_path: 'snip-${{steps.get_version.outputs.VERSION}}'
+          asset_content_type: application/octet-stream
+
+      - uses: kentik/pkg@v1.0.0-rc6
+        if: success() && contains(matrix.label, 'linux')
+        name: Build rpm Package
+        with:
+          name: snip
+          version: ${{steps.get_version.outputs.VERSION_BUILD}}
+          arch: x86_64
+          format: rpm
+          package: linux-package.yaml
+
+      - name: Fix rpm Package Name
+        if: success() && contains(matrix.label, 'linux')
+        shell: bash
+        run: |
+          cp snip-${{steps.get_version.outputs.VERSION_BUILD}}-1.x86_64.rpm snip-${{steps.get_version.outputs.VERSION}}.x86_64.rpm
+
+      - name: Publish rpm Package
+        if: success() && contains(matrix.label, 'linux')
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'snip-${{steps.get_version.outputs.VERSION}}.x86_64.rpm'
+          path: 'snip-${{steps.get_version.outputs.VERSION}}.x86_64.rpm'
+
+      - name: Release rpm Package
+        if: success() && contains(matrix.label, 'linux')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.get_url.outputs.UPLOAD_URL}}
+          asset_name: 'snip-${{steps.get_version.outputs.VERSION}}.x86_64.rpm'
+          asset_path: 'snip-${{steps.get_version.outputs.VERSION}}.x86_64.rpm'
+          asset_content_type: application/octet-stream
+
+      - uses: kentik/pkg@v1.0.0-rc6
+        if: success() && contains(matrix.label, 'linux')
+        name: Build deb Package
+        with:
+          name: snip
+          version: ${{steps.get_version.outputs.VERSION_BUILD}}
+          arch: x86_64
+          format: deb
+          package: linux-package.yaml
+
+      - name: Fix deb Package Name
+        if: success() && contains(matrix.label, 'linux')
+        shell: bash
+        run: |
+          cp snip_${{steps.get_version.outputs.VERSION_BUILD}}-1_amd64.deb snip_${{steps.get_version.outputs.VERSION}}_amd64.deb
+
+      - name: Publish deb Package
+        if: success() && contains(matrix.label, 'linux')
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'snip_${{steps.get_version.outputs.VERSION}}_amd64.deb'
+          path: 'snip_${{steps.get_version.outputs.VERSION}}_amd64.deb'
+
+      - name: Release deb Package
+        if: success() && contains(matrix.label, 'linux')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.get_url.outputs.UPLOAD_URL}}
+          asset_name: 'snip_${{steps.get_version.outputs.VERSION}}_amd64.deb'
+          asset_path: 'snip_${{steps.get_version.outputs.VERSION}}_amd64.deb'
+          asset_content_type: application/octet-stream
+
+  build-windows-image:
+    needs: [build-jar]
+    name: Build Windows Image
+    runs-on: windows-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v1
+
+      - name: 'Download GraalVM'
+        run: |
+          Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.2.0/graalvm-ce-java11-windows-amd64-20.2.0.zip -OutFile 'graal.zip'
+      - name: 'Install GraalVM'
+        run: |
+          Expand-Archive -path 'graal.zip' -destinationpath '.'
+      - name: 'Install Native Image'
+        run: |
+          graalvm-ce-java11-20.2.0\bin\gu.cmd install native-image
+      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
+        run: |
+          choco install visualstudio2017-workload-vctools
+      - name: 'Get Version Number'
+        id: get_version
+        run: |
+          echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+          echo ::set-output name=VERSION_BUILD::$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+        shell: bash
+
+      - name: Build Native
+        shell: cmd
+        env:
+          JAVA_HOME: ./graalvm-ce-java11-20.2.0
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          ./gradlew.bat clean build --no-daemon -Dquarkus.package.type=native ^
+            -Dquarkus.native.container-build=false ^
+            -Dquarkus.native.graalvm-home=$(pwd)/graalvm-ce-java11-20.2.0 ^
+            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$',--no-fallback
+
+      - name: Copy Natine Artifact
+        shell: bash
+        run: |
+          cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner.exe snip.exe
+
+      - name: Copy VCRuntime
+        shell: bash
+        run: |
+          cp /c/Windows/System32/VCRUNTIME140.dll .
+
+      - name: Zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path VCRUNTIME140.dll, snip.exe -CompressionLevel Optimal -DestinationPath snip-${{steps.get_version.outputs.VERSION}}-windows.zip
+
+      - name: 'Get Release URL'
+        if: contains(github.ref, 'v')
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: 'upload_url.txt'
+
+      - name: 'Get Upload URL'
+        id: get_url
+        if: contains(github.ref, 'v')
+        run: |
+          echo "::set-output name=UPLOAD_URL::$(cat upload_url.txt)"
+        shell: bash
+
+      - name: 'Publish Windows Image'
+        if: success()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: snip-${{steps.get_version.outputs.VERSION}}-windows.zip
+          path: snip-${{steps.get_version.outputs.VERSION}}-windows.zip
+
+      - name: 'Release Windows Image Asset'
+        if: success() && contains(github.ref, 'v')
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.get_url.outputs.UPLOAD_URL}}
+          asset_name: snip-${{steps.get_version.outputs.VERSION}}-windows.zip
+          asset_path: snip-${{steps.get_version.outputs.VERSION}}-windows.zip
+          asset_content_type: application/octet-stream
