@@ -1,7 +1,6 @@
 package io.github.kattlo.snip.processor;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -31,7 +30,7 @@ public class FileContentProcessor implements Processor {
                 .filter(Files::isRegularFile)
                 .peek(f -> log.debug("File to process its content {}", f.toAbsolutePath()))
                 .forEach(f -> {
-                    try(var writer = new FileWriter(f.toFile())){
+                    try{
 
                         var tmpDir = new File(FileUtils.getTempDirectory(),
                             context.getPlaceholders().getAppname());
@@ -49,11 +48,7 @@ public class FileContentProcessor implements Processor {
                                 command.sed(SedOption.substitute, ph.getKey(), ph.getValue());
                             });
 
-                        // delete file before the sed output to avoid windows blocking
-                        //FileUtils.forceDelete(f.toFile());
-
-                        //command.toFile(f.toFile());
-                        command.toWriter(writer);
+                        command.toFile(f.toFile());
 
                     }catch(IOException e){
                         throw new UncheckedIOException(e);
