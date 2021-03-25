@@ -42,9 +42,9 @@ process any file that is not binary.
   kind of special tool or dependency
 - can easily refactor and update our templation
 
-## Getting Stated
+## Getting Started
 
-### Install
+### Install Snip
 
 TODO
 
@@ -55,7 +55,7 @@ TODO
 # TODO
 ```
 
-- If you have a templation int the localhost file system:
+- If you have a templation at localhost file system:
 ```bash
 # TODO
 ```
@@ -214,6 +214,44 @@ post:
       - ./gradlew clean test --info
     windows: # to run on Windows
       - .\gradlew.bat clean test --info
+```
+
+## Installation
+
+TODO
+
+### Linux
+
+TODO
+
+### MacOS
+
+TODO
+
+### Windows
+
+#### Using the Setup
+
+- Download the latest [windows setup version]()
+- Open the downloaded setup and follow the instructions
+
+#### Binary
+
+- download the latest [zip for Windows]()
+- unzip it
+- copy `VCRUNTIME140.dll` to `C:\Windows\System32\`
+- get the absolute path to that unzipped directory
+- add the absolute path of Snip to your user `PATH` environment variable
+- open the prompt and type: `snip -h`
+
+### All
+
+- Install the [Java 11 for your O.S.](https://adoptopenjdk.net/releases.html)
+- Download the latest [über-jar]()
+- Run it:
+```bash
+# Replace '<version>' with the downloaded version
+java -jar snip-v<version>-all.jar -h
 ```
 
 ## Quarkus
