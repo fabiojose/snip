@@ -20,7 +20,7 @@ if we can just use `__s_placeholder_`?
 because of that we just employ it in the placeholder syntax.
 
 - [Java](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html#naming),
-  [JavaScritp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables),
+  [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables),
   [Python](https://www.w3schools.com/python/gloss_python_variable_names.asp),
   [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/identifier-names),
   [Golang](https://golang.org/ref/spec#Identifiers),
