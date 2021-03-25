@@ -191,8 +191,8 @@ my-file.txt
 
 ### `.snip.yml`
 
-To declarer your costum placeholders and post scaffold scripts to execute,
-you may create a `.snip.yml`.
+To declare your custom placeholders and post scaffold scripts to execute,
+you may create the `.snip.yml` within your templation repository.
 
 Example:
 ```yaml
@@ -208,11 +208,11 @@ placeholders:
       pattern: '[A-Z][\w]+' # [optional] Java Regex to validate the value: https://cutt.ly/OxOZBZY
       label: Class name for Domain
 post:
-  script: # The base directory for scripts is the --directory value
-    linux: # To run in Linux & MacOS
+  script: # The base directory for scripts is --directory
+    linux: # To run on Linux & MacOS
       - ls -alh .
       - ./gradlew clean test --info
-    windows: # to run in Windows
+    windows: # to run on Windows
       - .\gradlew.bat clean test --info
 ```
 
