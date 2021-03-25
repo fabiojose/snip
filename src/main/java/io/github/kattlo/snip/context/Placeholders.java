@@ -39,14 +39,14 @@ public class Placeholders {
         Pattern.compile("^" + PLACEHOLDER_PATTERN_STRING + "=.+$");
 
     private static final List<String> RESERVED_WORDS = List.of(
-        Context.APP_PARAM,
+        Context.NAME_PARAM,
         Context.VERSION_PARAM,
         Context.NAMESPACE_PARAM
     );
 
     private static final String EQUALS = "=";
 
-    private String appname;
+    private String name;
     private String version;
     private String namespace;
 
@@ -67,13 +67,13 @@ public class Placeholders {
 
     @Builder(toBuilder = true)
     @SuppressWarnings("unchecked")
-    private static Placeholders create(String appname, String version, String namespace,
+    private static Placeholders create(String name, String version, String namespace,
         List<String> parameters, JSONObject rules){
 
         var result = new Placeholders();
 
         result.placeholders = new HashMap<>();
-        result.placeholders.put(Context.APP_PARAM, appname);
+        result.placeholders.put(Context.NAME_PARAM, name);
         result.placeholders.put(Context.VERSION_PARAM, version);
         result.placeholders.put(Context.NAMESPACE_PARAM, namespace);
 
@@ -109,7 +109,7 @@ public class Placeholders {
         result.placeholders.putAll(result.customPlaceholders);
         result.placeholders = Collections.unmodifiableMap(result.placeholders);
 
-        result.appname = Objects.requireNonNull(appname);
+        result.name = Objects.requireNonNull(name);
         result.version = Objects.requireNonNull(version);
         result.namespace = Objects.requireNonNull(namespace);
 

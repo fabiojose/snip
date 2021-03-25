@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 import picocli.CommandLine.Model.CommandSpec;
 
@@ -35,7 +36,7 @@ import picocli.CommandLine.Model.CommandSpec;
         "c",
         "scaffold"
     },
-    description = "To create app based on template",
+    description = "To create project based on templation",
     mixinStandardHelpOptions = true
 )
 @Slf4j
@@ -46,7 +47,7 @@ public class CreateCommand implements Runnable {
 
     private Reporter reporter = Reporter.create();
     private Path directory;
-    private String appname;
+    private String name;
     private TemplationFetcher fetcher;
     private final Placeholders.PlaceholdersBuilder placeholders =
         Placeholders.builder();
@@ -65,7 +66,7 @@ public class CreateCommand implements Runnable {
             "-d",
             "--directory"
         },
-        description = "Directory to hold the new app (default to current)",
+        description = "Directory to hold the new project (default to current)",
         descriptionKey = "/path/to/",
         showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
         defaultValue = ".",
@@ -80,21 +81,17 @@ public class CreateCommand implements Runnable {
         }
     }
 
-    @Option(
-        names = {
-            "-a",
-            "--app",
-            "--app-name"
-        },
-        description = "The name of app to create",
-        descriptionKey = "app name",
-        required = true
+    @Parameters(
+        arity = "1",
+        defaultValue = "The name of project to create",
+        descriptionKey = "name",
+        paramLabel = "name"
     )
-    public void setAppname(String appname) {
-        validate(appname, "--app-name");
-        this.appname = appname;
+    public void setName(String name) {
+        validate(name, "name");
+        this.name = name;
 
-        placeholders.appname(appname);
+        placeholders.name(name);
     }
 
     @Option(
@@ -168,7 +165,7 @@ public class CreateCommand implements Runnable {
     public void run() {
 
         boolean succcess = false;
-        var appdir = Path.of(directory.toString(), appname);
+        var appdir = Path.of(directory.toString(), name);
         try{
             // checkout to /tmp/snip/
             var template = fetcher.fetch();

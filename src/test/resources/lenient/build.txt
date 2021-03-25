@@ -1,2 +1,2 @@
-project=__s_app_
+project=__s_name_
 version=__s_version_

@@ -33,7 +33,7 @@ public class FileContentProcessor implements Processor {
                     try{
 
                         var tmpDir = new File(FileUtils.getTempDirectory(),
-                            context.getPlaceholders().getAppname());
+                            context.getPlaceholders().getName());
 
                         FileUtils.forceMkdir(tmpDir);
 
