@@ -56,12 +56,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kattlo/snip/main/install.s
 
 - From remote templation hosted in Github:
 ```bash
-snip c -t snipme/java11-quarkus-maven -a code-with-snip
+snip c -t snipme/java11-quarkus-maven code-with-snip
 ```
 
 - If you have a templation at localhost file system:
 ```bash
-snip c -t file:/path/to/my/templation -a code-with-snip
+snip c -t file:/path/to/my/templation code-with-snip
 ```
 
 - 🎈 Build your brand new app
@@ -105,9 +105,9 @@ public class __d_domain_Get{
 
 ### Built-in Placeholders
 
-- `__s_namespace_`: application's namespace or package
-- `__s_app_`: application's name
-- `__s_version_`: application's version
+- `__s_namespace_`: project's namespace or package
+- `__s_name_`: project's name
+- `__s_version_`: project's version
 
 #### Processing of `__s_namespace_`
 
@@ -150,7 +150,8 @@ To pass your custom placeholder to Snip scaffold is so simple, just use the
 snip c <options> \
   -p '__c_comment_=Some comments to use' \
   -p "__c_author_=$USER" \
-  -p '__c_domain_=payments'
+  -p '__c_domain_=payments' \
+  'my-new-project-name'
 ```
 
 ## How to Create a Templation? 💡
