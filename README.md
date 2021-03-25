@@ -74,8 +74,8 @@ TODO
 Every placeholder must follow this pattern:
 - `__[0-9a-zA-Z]+_[0-9a-zA-Z]+_`
 
-Simplifing...:
-- ✅ valid placeholders names:
+Simplifying...:
+- ✅ valid placeholders names are:
   - `__c_myplaceholder_`
   - `__cd_SomePlaceHolder_`
   - `__cde_place0_`
@@ -86,7 +86,7 @@ Simplifing...:
   - `__e_place holder_`
   - `__aplaceholder_`
 
-And you may use placeholders in directory name, file name and file content.
+And you may use placeholders in directory names, file names and file content.
 
 - directory name:
   - /path/to/some/directory/src/`__s_namespace_`
@@ -140,14 +140,14 @@ As long as you follow the [placeholder pattern](#placeholders) and do not use
 any [built-in placeholders](#built-in-placeholders), you may define your own
 placeholders.
 
-You must to make it clear in the templation doc, what is the placeholder name
+You must make clear in the templation docs what are the placeholders names
 and the expected values.
 
-To pass your custom placeholder to Snip scaffold is so simple, use the `-p`
-option as many as you want.
+To pass your custom placeholder to Snip scaffold is so simple, just use the
+`-p` option as many as you want.
 
 ```bash
-snip c \
+snip c <options> \
   -p '__c_comment_=Some comments to use' \
   -p "__c_author_=$USER" \
   -p '__c_domain=payments'
@@ -155,15 +155,62 @@ snip c \
 
 ## How to Create a Templation?
 
-TODO
+To create your templation is so simple, you must refactor an existing project
+to use some of [built-in placeholders](#built-in-placeholders) and
+[your own](#custom-placeholders).
 
 ### `.snipignore`
 
-TODO
+Always there are files and folders that you want to ignore during the scaffolding
+process, for this you may create a `.snipignore` file.
+
+Example:
+```gitignore
+## Folders ##
+.git/
+.gradle/
+build/
+
+## Files ##
+.project
+.classpath
+my-file.txt
+
+## Wildcards ##
+*.png
+*.iml
+*.iws
+```
 
 ### `.snip.yml`
 
-TODO
+To declarer your costum placeholders and post scaffold scripts to execute,
+you may create a `.snip.yml`.
+
+Example:
+```yaml
+description: |
+  Java 11 with Gradle
+placeholders:
+  strict: yes # Every placeholder in the spec must be present
+  spec:
+    - name: __c_author_
+      pattern: ".+" # Java Regex Pattern: https://cutt.ly/OxOZBZY
+      label: Author Name
+    - name: __c_domain_
+      pattern: '[A-Z][\w]+' # Java Regex Pattern: https://cutt.ly/OxOZBZY
+      label: Class name for Domain
+post:
+  script: # The base directory for scripts is the --directory value
+    linux:
+      - mkdir dummy
+      - ls -alh .
+      - ./gradlew clean test --info
+    windows:
+      - .\gradlew.bat clean test --info
+```
+
+
 
 ## Quarkus
 

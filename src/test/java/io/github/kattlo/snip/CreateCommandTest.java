@@ -696,7 +696,7 @@ public class CreateCommandTest {
     }
 
     @Test
-    public void should_throw_when_custom_placeholder_does_not_follow_the_rule() {
+    public void should_throw_when_custom_placeholder_does_not_follow_the_pattern() {
 
         String[] args = {
             "create",
@@ -716,6 +716,29 @@ public class CreateCommandTest {
 
         // assert
         assertEquals(1, exitno);
+    }
+
+    @Test
+    public void should_be_ok_when_custom_placeholder_does_not_have_pattern() {
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-21",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/no-pattern").toURI().toString(),
+            "-p", "__c_domain_=domain",
+            "-p", "__c_author_=Fábio Jose"
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(0, exitno);
     }
 
     @Test

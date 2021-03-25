@@ -1,0 +1,2 @@
+project=__s_app_
+version=__s_version_

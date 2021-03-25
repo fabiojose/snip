@@ -1,0 +1,15 @@
+description: |
+  Describe your templation
+placeholders:
+  strict: no # any placeholder may absent
+  spec:
+    - name: __c_author_
+      label: Author Name
+    - name: __c_domain_
+      label: Class name for Domain
+post:
+  script:
+    linux: # base directory is the appdir
+      - echo linux
+    windows:
+      - echo windows
