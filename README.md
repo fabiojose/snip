@@ -159,6 +159,13 @@ To create your templation is so simple, you must refactor an existing project
 to use some of [built-in placeholders](#built-in-placeholders) and
 [your own](#custom-placeholders).
 
+Examples:
+
+TODO
+- Java 11 with Gradle
+- Java 11 with Maven
+- Python 3
+
 ### `.snipignore`
 
 Always there are files and folders that you want to ignore during the scaffolding
@@ -195,22 +202,19 @@ placeholders:
   strict: yes # Every placeholder in the spec must be present
   spec:
     - name: __c_author_
-      pattern: ".+" # Java Regex Pattern: https://cutt.ly/OxOZBZY
+      pattern: ".+" # [optional] Java Regex to validate the value: https://cutt.ly/OxOZBZY
       label: Author Name
     - name: __c_domain_
-      pattern: '[A-Z][\w]+' # Java Regex Pattern: https://cutt.ly/OxOZBZY
+      pattern: '[A-Z][\w]+' # [optional] Java Regex to validate the value: https://cutt.ly/OxOZBZY
       label: Class name for Domain
 post:
   script: # The base directory for scripts is the --directory value
-    linux:
-      - mkdir dummy
+    linux: # To run in Linux & MacOS
       - ls -alh .
       - ./gradlew clean test --info
-    windows:
+    windows: # to run in Windows
       - .\gradlew.bat clean test --info
 ```
-
-
 
 ## Quarkus
 
