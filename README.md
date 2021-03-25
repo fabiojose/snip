@@ -65,8 +65,8 @@ snip c -t file:/path/to/my/templation -a code-with-snip
 ```
 
 - 🎈 Build your brand new app
-  - if the template does not have post scripts to perform build
-- 🧰 Open it in your favorite IDE . . .
+  - if the templation does not have post scripts to perform build
+- ⚙️ Open it in your favorite IDE . . .
   - [VS Code for example](https://code.visualstudio.com/)
 
 ## Placeholders
@@ -75,7 +75,7 @@ Every placeholder must follow this pattern:
 - `__[0-9a-zA-Z]+_[0-9a-zA-Z]+_`
 
 Simplifying...:
-- ✅ valid placeholders names are:
+- ☑️ valid placeholders names are:
   - `__c_myplaceholder_`
   - `__cd_SomePlaceHolder_`
   - `__cde_place0_`
@@ -153,11 +153,13 @@ snip c <options> \
   -p '__c_domain_=payments'
 ```
 
-## How to Create a Templation?
+## How to Create a Templation? 💡
 
 To create your templation is so simple, you must refactor an existing project
 to use some of [built-in placeholders](#built-in-placeholders) and
 [your own](#custom-placeholders).
+
+Done! 🤗 You have a templation to use.
 
 Examples:
 
