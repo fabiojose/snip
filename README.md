@@ -56,7 +56,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kattlo/snip/main/install.s
 
 - From remote templation hosted in Github:
 ```bash
-snip c -t snipme/java11-quarkus -a code-with-snip
+snip c -t snipme/java11-quarkus-maven -a code-with-snip
 ```
 
 - If you have a templation at localhost file system:
