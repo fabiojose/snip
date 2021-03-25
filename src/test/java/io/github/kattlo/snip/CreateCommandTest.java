@@ -770,5 +770,26 @@ public class CreateCommandTest {
     @Test
     public void should_be_ok_when_lenient_and_absend_custom_placeholder() {
 
+        var expected = Path.of(directory, "app-name-24/");
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "-a", "app-name-24",
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/lenient").toURI().toString(),
+            "-p", "__c_domain_=MyDomain",
+            //"-p", "__c_author_=fabiojose",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(0, exitno);
+        assertTrue(Files.exists(expected));
     }
 }
