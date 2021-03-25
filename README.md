@@ -218,21 +218,51 @@ post:
 
 ## Installation
 
-TODO
+The following instructions per O.S. may be used to brand new
+installations or updates.
 
 ### Linux
 
-TODO
+#### Binary
+
+| Method    | Command                                                                               |
+|:----------|:--------------------------------------------------------------------------------------|
+| **curl**  | `sh -c "$(curl -fsSL https://raw.githubusercontent.com/kattlo/snip/main/install.sh)"` |
+| **wget**  | `sh -c "$(wget -O- https://raw.githubusercontent.com/kattlo/snip/main/install.sh)"`   |
+| **fetch** | `sh -c "$(fetch -o - https://raw.githubusercontent.com/kattlo/snip/main/install.sh)"` |
+
+__Manual inspection__
+
+It's a good idea to inspect the install script from projects you don't yet know. You can do
+that by downloading the install script first, looking through it so everything looks normal,
+then running it:
+
+```shell
+wget https://raw.githubusercontent.com/kattlo/snip/main/install.sh
+sh install.sh
+```
+
+#### Packages
+
+- `.deb` [are available]()
+- `.rpm` [are available]()
 
 ### MacOS
 
-TODO
+- Download the lates [MacOS binary version]()
+- Save it as `snip`
+- Run the following commands:
+```shell
+sudo chmod +x snip
+sudo mv snip /usr/local/bin/snip
+snip -h
+```
 
 ### Windows
 
 #### Using the Setup
 
-- Download the latest [windows setup version]()
+- Download the latest [Windows setup version]()
 - Open the downloaded setup and follow the instructions
 
 #### Binary
