@@ -46,28 +46,28 @@ process any file that is not binary.
 
 ### Install Snip
 
-TODO
+```shell
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/kattlo/snip/main/install.sh)"
+```
+
+- [See others installation options](#installation)
 
 ### Scaffold
 
 - From remote templation hosted in Github:
 ```bash
-# TODO
+snip c -t snipme/java11-quarkus -a code-with-snip
 ```
 
 - If you have a templation at localhost file system:
 ```bash
-# TODO
+snip c -t file:/path/to/my/templation -a code-with-snip
 ```
-
-### Build
 
 - 🎈 Build your brand new app
-```bash
-# TODO
-```
-
+  - if the template does not have post scripts to perform build
 - 🧰 Open it in your favorite IDE . . .
+  - [VS Code for example](https://code.visualstudio.com/)
 
 ## Placeholders
 
@@ -150,7 +150,7 @@ To pass your custom placeholder to Snip scaffold is so simple, just use the
 snip c <options> \
   -p '__c_comment_=Some comments to use' \
   -p "__c_author_=$USER" \
-  -p '__c_domain=payments'
+  -p '__c_domain_=payments'
 ```
 
 ## How to Create a Templation?
@@ -244,8 +244,8 @@ sh install.sh
 
 #### Packages
 
-- `.deb` [are available]()
-- `.rpm` [are available]()
+- Debian and Ubuntu: [`.deb`]()
+- RedHat, Fedora and CentOS: [`.rpm`]()
 
 ### MacOS
 
