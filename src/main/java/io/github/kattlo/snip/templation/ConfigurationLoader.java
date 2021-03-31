@@ -29,7 +29,7 @@ public class ConfigurationLoader {
 
     public static final String CONFIG_FILE_NAME = ".snip.yml";
 
-    private static final String SCHEMA_FILE_PATH = "/snip.schema.json";
+    private static final String SCHEMA_FILE_PATH = "/snip-schema.json";
 
     private static Schema SCHEMA;
     private static Schema getSchema() {
