@@ -273,7 +273,7 @@ jobs:
           ./gradlew.bat clean build --no-daemon -Dquarkus.package.type=native ^
             -Dquarkus.native.container-build=false ^
             -Dquarkus.native.graalvm-home=$(pwd)/graalvm-ce-java11-21.0.0.2 ^
-            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$',-H:Log=registerResource:,--no-fallback
+            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources=.*json$,-H:Log=registerResource:,--no-fallback
 
       - name: Copy Natine Artifact
         shell: bash
