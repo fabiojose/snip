@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Placeholders {
 
     public static final String PLACEHOLDER_PATTERN_STRING =
-        "__[0-9a-zA-Z]+_[0-9a-zA-Z]+_";
+        "__[a-zA-Z]+[\\w]*[0-9a-zA-Z]+_";
 
     public static final Pattern PLACEHOLDER_PATTERN =
         Pattern.compile("(" + PLACEHOLDER_PATTERN_STRING + ")");
@@ -65,6 +65,20 @@ public class Placeholders {
     @Getter(AccessLevel.MODULE)
     private Map<String, String> customPlaceholdersRules;
 
+    private static String fix(String parameter) {
+
+        if(!PLACEHOLDER_PATTERN.matcher(parameter).find()){
+            log.debug("Fixing placeholder format: {}", parameter);
+
+            var fixed = "__" + parameter + "_";
+            log.debug("Fixed placeholder format {}", fixed);
+
+            return fixed;
+        }
+
+        return parameter;
+    }
+
     @Builder(toBuilder = true)
     @SuppressWarnings("unchecked")
     private static Placeholders create(String name, String version, String namespace,
@@ -80,14 +94,18 @@ public class Placeholders {
         var invalid = Optional.ofNullable(parameters)
             .orElseGet(() -> List.of())
             .stream()
-            .filter(p -> !PARAM_PATTERN.matcher(p).matches())
+            .filter(p -> !PARAM_PATTERN.matcher(fix(p)).matches())
             .collect(Collectors.toList());
 
         if(!invalid.isEmpty()){
             throw new IllegalPlaceholderException(invalid.toString());
         }
 
-        var reserved = Optional.ofNullable(parameters)
+        var fixedParameters = parameters.stream()
+            .map(Placeholders::fix)
+            .collect(Collectors.toList());
+
+        var reserved = Optional.ofNullable(fixedParameters)
             .orElseGet(() -> List.of())
             .stream()
             .map(p -> p.split(EQUALS))
@@ -99,7 +117,7 @@ public class Placeholders {
             throw new ReservedPlaceholderException(reserved.toString());
         }
 
-        result.customPlaceholders = Optional.ofNullable(parameters)
+        result.customPlaceholders = Optional.ofNullable(fixedParameters)
             .orElseGet(() -> List.of())
             .stream()
             .map(p -> p.split(EQUALS))
