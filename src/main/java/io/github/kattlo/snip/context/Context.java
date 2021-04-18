@@ -11,9 +11,9 @@ import lombok.Getter;
 @Getter
 public class Context {
 
-    public static final String NAMESPACE_PARAM = "__s_namespace_";
-    public static final String NAME_PARAM = "__s_name_";
-    public static final String VERSION_PARAM = "__s_version_";
+    public static final String NAMESPACE_PARAM = "__namespace_";
+    public static final String NAME_PARAM = "__name_";
+    public static final String VERSION_PARAM = "__version_";
 
     public static final String SNIP_IGNORE =  ".snipignore";
 

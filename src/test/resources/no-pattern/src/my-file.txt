@@ -1,1 +1,1 @@
-version=__s_version_
+version=__version_

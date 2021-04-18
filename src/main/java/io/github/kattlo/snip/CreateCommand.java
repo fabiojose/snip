@@ -155,7 +155,7 @@ public class CreateCommand implements Runnable {
             "-p"
         },
         description = "Custom parameters used by the template",
-        paramLabel = "__my_param_=my-value"
+        paramLabel = "placeholder=my-value"
     )
     public void setParameters(String[] parameters) {
         placeholders.parameters(Arrays.asList(parameters));

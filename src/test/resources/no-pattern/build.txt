@@ -1,2 +1,2 @@
-project=__s_name_
-version=__s_version_
+project=__name_
+version=__version_

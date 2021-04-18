@@ -318,6 +318,7 @@ public class CreateCommandTest {
     @Test
     public void should_create_folder_hierarchy_when__s_namespace_is_used() {
 
+
         // setup
         var expected = Path.of(directory, "app-name-7/src/my/namespace");
 
@@ -549,6 +550,32 @@ public class CreateCommandTest {
         assertTrue(expected.toFile().exists());
     }
 
+    @Test
+    public void should_fix_the_parameter_name() {
+
+        // setup
+        var expected = Path.of(directory, "app-name-14/src/app-name-14/MyDomain");
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "--app-namespace", "my.namespace",
+            "--app-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "c_domain=MyDomain",
+            "-p", "__c_author_=fabiojose",
+            "app-name-14",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(0, exitno);
+        assertTrue(expected.toFile().exists());
+    }
     @Test
     public void should_process_custom_parameters_in_folder_name_whith_more_text() {
 

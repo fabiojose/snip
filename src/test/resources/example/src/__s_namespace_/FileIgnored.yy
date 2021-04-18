@@ -1,1 +1,0 @@
-namespace __s_namespace_;
