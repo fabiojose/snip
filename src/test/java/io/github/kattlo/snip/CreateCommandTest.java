@@ -34,7 +34,7 @@ public class CreateCommandTest {
             "--app-namespace", "my.namespace",
             "--app-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__s_namespace_=a.namespace",
+            "-p", "__namespace_=a.namespace",
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
             "app-name-reserver-words",
@@ -434,7 +434,7 @@ public class CreateCommandTest {
     public void should_not_process_ignored_folder() {
 
         // setup
-        var expected = Path.of(directory, "app-name-11/src/to-ignore/__s_name_.txt");
+        var expected = Path.of(directory, "app-name-11/src/to-ignore/__name_.txt");
 
         String[] args = {
             "create",
@@ -486,7 +486,7 @@ public class CreateCommandTest {
         try(var in = new BufferedReader(new FileReader(expected.toFile()))){
             var content = in.lines().collect(Collectors.joining());
 
-            assertTrue(content.contains("version=__s_version_"));
+            assertTrue(content.contains("version=__version_"));
         }
     }
 
@@ -494,7 +494,7 @@ public class CreateCommandTest {
     public void should_not_process_file_content_within_ignored_folder() throws Exception {
 
         // setup
-        var expected = Path.of(directory, "app-name-13/src/to-ignore/__s_name_.txt");
+        var expected = Path.of(directory, "app-name-13/src/to-ignore/__name_.txt");
 
         String[] args = {
             "create",
@@ -519,7 +519,7 @@ public class CreateCommandTest {
         try(var in = new BufferedReader(new FileReader(expected.toFile()))){
             var content = in.lines().collect(Collectors.joining());
 
-            assertTrue(content.contains("param=__s_version"));
+            assertTrue(content.contains("param=__version_"));
         }
     }
 
@@ -554,7 +554,7 @@ public class CreateCommandTest {
     public void should_fix_the_parameter_name() {
 
         // setup
-        var expected = Path.of(directory, "app-name-14/src/app-name-14/MyDomain");
+        var expected = Path.of(directory, "app-name-25/src/app-name-25/MyDomain");
 
         String[] args = {
             "create",
@@ -564,7 +564,7 @@ public class CreateCommandTest {
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "c_domain=MyDomain",
             "-p", "__c_author_=fabiojose",
-            "app-name-14",
+            "app-name-25",
         };
 
         var command = new CommandLine(entry);
