@@ -89,16 +89,16 @@ Simplifying...:
 And you may use placeholders in directory names, file names and file content.
 
 - directory name:
-  - /path/to/some/directory/src/`__s_namespace_`
-  - /path/to/directory/resources/`__c_placeholder_`Controller
-  - /src/`__s_namespace_`/`__d_domain_`/`__c_classname_`
+  - /path/to/some/directory/src/`__namespace_`
+  - /path/to/directory/resources/`__placeholder_`Controller
+  - /src/`__namespace_`/`__domain_`/`__classname_`
 - file name:
-  - /path/to/src/main/resources/`__c_entity_`.avsc
-  - /path/to/src/main/java/`__s_namespace_`/controller/`__d_domain_`Get.java
+  - /path/to/src/main/resources/`__entity_`.avsc
+  - /path/to/src/main/java/`__namespace_`/controller/`__domain_`Get.java
 - file content:
 ```java
-package __s_namespace_;
-public class __d_domain_Get{
+package __namespace_;
+public class __domain_Get{
 
 }
 ```
@@ -148,9 +148,9 @@ To pass your custom placeholder to Snip scaffold is so simple, just use the
 
 ```bash
 snip c <options> \
-  -p '__c_comment_=Some comments to use' \
-  -p "__c_author_=$USER" \
-  -p '__c_domain_=payments' \
+  -p 'comment=Some comments to use' \
+  -p "author=$USER" \
+  -p 'domain=payments' \
   'my-new-project-name'
 ```
 

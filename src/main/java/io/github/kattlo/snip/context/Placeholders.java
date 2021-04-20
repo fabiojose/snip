@@ -67,10 +67,12 @@ public class Placeholders {
 
     private static String fix(String parameter) {
 
-        if(!PLACEHOLDER_PATTERN.matcher(parameter).find()){
+        var splitted = parameter.split(EQUALS);
+
+        if(!PLACEHOLDER_PATTERN.matcher(splitted[0]).find()){
             log.debug("Fixing placeholder format: {}", parameter);
 
-            var fixed = "__" + parameter + "_";
+            var fixed = "__" + splitted[0] + "_" + EQUALS + splitted[1];
             log.debug("Fixed placeholder format {}", fixed);
 
             return fixed;
@@ -94,6 +96,7 @@ public class Placeholders {
         var invalid = Optional.ofNullable(parameters)
             .orElseGet(() -> List.of())
             .stream()
+            .map(Placeholders::fix)
             .filter(p -> !PARAM_PATTERN.matcher(fix(p)).matches())
             .collect(Collectors.toList());
 
