@@ -23,7 +23,7 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:2.7.0'
 
     implementation 'org.apache.commons:commons-lang3:3.11'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.2'
     implementation 'org.zeroturnaround:zt-exec:1.12'
 
