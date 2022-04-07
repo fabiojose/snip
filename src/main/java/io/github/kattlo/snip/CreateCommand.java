@@ -83,9 +83,9 @@ public class CreateCommand implements Runnable {
 
     @Parameters(
         arity = "1",
-        defaultValue = "The name of project to create",
-        descriptionKey = "name",
-        paramLabel = "name"
+        description = "The value of __name_ placeholder",
+        descriptionKey = "project-name",
+        paramLabel = "project-name"
     )
     public void setName(String name) {
         validate(name, "name");
@@ -96,33 +96,32 @@ public class CreateCommand implements Runnable {
 
     @Option(
         names = {
-            "--app-version"
+            "--project-version"
         },
-        description = "The version of app to create",
-        descriptionKey = "app version",
+        description = "The value of __version_ placeholder",
+        descriptionKey = "project version",
         showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
         defaultValue = "1.0.0",
         required = true
     )
     public void setVersion(String version){
-        validate(version, "--app-version");
+        validate(version, "--project-version");
         placeholders.version(version);
     }
 
     @Option(
         names = {
             "-n",
-            "--namespace",
-            "--app-namespace"
+            "--namespace"
         },
-        description = "The namespace or package of the app to create",
+        description = "The value of __namespace_ placeholder",
         descriptionKey = "namespace",
         showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
         defaultValue = "com.example",
         required = true
     )
     public void setNamespace(String namespace){
-        validate(namespace, "--app-namespace");
+        validate(namespace, "--namespace");
         placeholders.namespace(namespace);
     }
 
@@ -132,7 +131,11 @@ public class CreateCommand implements Runnable {
             "--templation",
             "--template"
         },
-        description = "The templation to create the app",
+        description = {
+            "The templation to create the app",
+            "Should be in the local file system: file:/path/to/",
+            "Or remote within Github: user/repo"
+        },
         descriptionKey = "templation",
         required = true
     )
@@ -154,8 +157,8 @@ public class CreateCommand implements Runnable {
         names = {
             "-p"
         },
-        description = "Custom parameters used by the template",
-        paramLabel = "__my_param_=my-value"
+        description = "Custom placeholders used by a specific templation",
+        paramLabel = "placeholder=my-value"
     )
     public void setParameters(String[] parameters) {
         placeholders.parameters(Arrays.asList(parameters));

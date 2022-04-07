@@ -14,7 +14,7 @@ Snip and scaffold now a new application.
 start our programming
 
 💡 Why use `${placeholder}`, `{{placeholder}}` or `[placeholder]`
-if we can just use `__s_placeholder_`?
+if we can just use `__placeholder_`?
 
 🦊 In any modern language, underscore `_` is a valid name identifier,
 because of that we just employ it in the placeholder syntax.
@@ -72,46 +72,46 @@ snip c -t file:/path/to/my/templation code-with-snip
 ## Placeholders
 
 Every placeholder must follow this pattern:
-- `__[0-9a-zA-Z]+_[0-9a-zA-Z]+_`
+- `__[a-zA-Z]+[\\w]*[0-9a-zA-Z]+_"`
 
 Simplifying...:
 - ☑️ valid placeholders names are:
-  - `__c_myplaceholder_`
-  - `__cd_SomePlaceHolder_`
+  - `__myplaceholder_`
+  - `__SomePlaceHolder_`
   - `__cde_place0_`
   - `__AB_Place90_`
 - ❌ invalid ones:
-  - `__c_place-holder_`
+  - `__place-holder_`
   - `_d_placeholder_`
   - `__e_place holder_`
-  - `__aplaceholder_`
+  - `__20aplaceholder_`
 
 And you may use placeholders in directory names, file names and file content.
 
 - directory name:
-  - /path/to/some/directory/src/`__s_namespace_`
-  - /path/to/directory/resources/`__c_placeholder_`Controller
-  - /src/`__s_namespace_`/`__d_domain_`/`__c_classname_`
+  - /path/to/some/directory/src/`__namespace_`
+  - /path/to/directory/resources/`__placeholder_`Controller
+  - /src/`__namespace_`/`__domain_`/`__classname_`
 - file name:
-  - /path/to/src/main/resources/`__c_entity_`.avsc
-  - /path/to/src/main/java/`__s_namespace_`/controller/`__d_domain_`Get.java
+  - /path/to/src/main/resources/`__entity_`.avsc
+  - /path/to/src/main/java/`__namespace_`/controller/`__domain_`Get.java
 - file content:
 ```java
-package __s_namespace_;
-public class __d_domain_Get{
+package __namespace_;
+public class __domain_Get{
 
 }
 ```
 
 ### Built-in Placeholders
 
-- `__s_namespace_`: project's namespace or package
-- `__s_name_`: project's name
-- `__s_version_`: project's version
+- `__namespace_`: project's namespace or package
+- `__name_`: project's name
+- `__version_`: project's version
 
-#### Processing of `__s_namespace_`
+#### Processing of `__namespace_`
 
-When `__s_namespace_` is used in directories names, there is a special
+When `__namespace_` is used in directories names, there is a special
 processing.
 
 __Example__:
@@ -121,10 +121,10 @@ When the templation has a directory structure like this:
 ```
 .
 └── src
-    └── __s_namespace_
+    └── __namespace_
 ```
 
-And `__s_namespace_=com.example`. After Snip scaffolding, the
+And `__namespace_=com.example`. After Snip scaffolding, the
 new directory structure will be:
 
 ```
@@ -148,9 +148,9 @@ To pass your custom placeholder to Snip scaffold is so simple, just use the
 
 ```bash
 snip c <options> \
-  -p '__c_comment_=Some comments to use' \
-  -p "__c_author_=$USER" \
-  -p '__c_domain_=payments' \
+  -p 'comment=Some comments to use' \
+  -p "author=$USER" \
+  -p 'domain=payments' \
   'my-new-project-name'
 ```
 

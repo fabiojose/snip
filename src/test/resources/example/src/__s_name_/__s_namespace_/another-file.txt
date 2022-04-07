@@ -1,2 +1,0 @@
-custom=__c_custom_
-project=__s_name_

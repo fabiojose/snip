@@ -31,10 +31,10 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
-            "-p", "__s_namespace_=a.namespace",
+            "-p", "__namespace_=a.namespace",
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
             "app-name-reserver-words",
@@ -57,8 +57,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "my invalid param=with value",
             "-p", "__c_domain_=MyDomain",
@@ -83,8 +83,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0",
             "--template", "file:/path/not/exists",
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -107,8 +107,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0",
             "--template", "fabiojose/unknown",
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -131,8 +131,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0-SNAPSHOT",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0-SNAPSHOT",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -155,8 +155,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "$no-a-version",
+            "--namespace", "my.namespace",
+            "--project-version", "$no-a-version",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -179,8 +179,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "My Invalid Namespace",
-            "--app-version", "1.0.0-SNAPSHOT",
+            "--namespace", "My Invalid Namespace",
+            "--project-version", "1.0.0-SNAPSHOT",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -203,8 +203,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", "/path/not/exists",
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -229,8 +229,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -263,8 +263,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -296,8 +296,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -318,14 +318,15 @@ public class CreateCommandTest {
     @Test
     public void should_create_folder_hierarchy_when__s_namespace_is_used() {
 
+
         // setup
         var expected = Path.of(directory, "app-name-7/src/my/namespace");
 
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -351,8 +352,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -378,8 +379,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -405,8 +406,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -433,13 +434,13 @@ public class CreateCommandTest {
     public void should_not_process_ignored_folder() {
 
         // setup
-        var expected = Path.of(directory, "app-name-11/src/to-ignore/__s_name_.txt");
+        var expected = Path.of(directory, "app-name-11/src/to-ignore/__name_.txt");
 
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -465,8 +466,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -485,7 +486,7 @@ public class CreateCommandTest {
         try(var in = new BufferedReader(new FileReader(expected.toFile()))){
             var content = in.lines().collect(Collectors.joining());
 
-            assertTrue(content.contains("version=__s_version_"));
+            assertTrue(content.contains("version=__version_"));
         }
     }
 
@@ -493,13 +494,13 @@ public class CreateCommandTest {
     public void should_not_process_file_content_within_ignored_folder() throws Exception {
 
         // setup
-        var expected = Path.of(directory, "app-name-13/src/to-ignore/__s_name_.txt");
+        var expected = Path.of(directory, "app-name-13/src/to-ignore/__name_.txt");
 
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -518,7 +519,7 @@ public class CreateCommandTest {
         try(var in = new BufferedReader(new FileReader(expected.toFile()))){
             var content = in.lines().collect(Collectors.joining());
 
-            assertTrue(content.contains("param=__s_version"));
+            assertTrue(content.contains("param=__version_"));
         }
     }
 
@@ -531,8 +532,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -550,6 +551,32 @@ public class CreateCommandTest {
     }
 
     @Test
+    public void should_fix_the_parameter_name() {
+
+        // setup
+        var expected = Path.of(directory, "app-name-25/src/app-name-25/MyDomain");
+
+        String[] args = {
+            "create",
+            "-d", directory,
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
+            "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
+            "-p", "c_domain=MyDomain",
+            "-p", "__c_author_=fabiojose",
+            "app-name-25",
+        };
+
+        var command = new CommandLine(entry);
+
+        // act
+        var exitno = command.execute(args);
+
+        // assert
+        assertEquals(0, exitno);
+        assertTrue(expected.toFile().exists());
+    }
+    @Test
     public void should_process_custom_parameters_in_folder_name_whith_more_text() {
 
         // setup
@@ -558,8 +585,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -585,8 +612,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "-p", "__c_author_=fabiojose",
@@ -612,8 +639,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=Custom",
             "-p", "__c_author_=fabiojose",
@@ -639,8 +666,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_custom_=Some Text",
             "-p", "__c_domain_=MyDomain",
@@ -673,8 +700,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", "fabiojose/dipower-ex",
             "app-name-20",
         };
@@ -701,8 +728,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=incorrect",
             "-p", "__c_author_=fabiojose",
@@ -724,8 +751,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/no-pattern").toURI().toString(),
             "-p", "__c_domain_=domain",
             "-p", "__c_author_=Fábio Jose",
@@ -747,8 +774,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "app-name-22"
@@ -771,8 +798,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/example").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "app-name-23"
@@ -797,8 +824,8 @@ public class CreateCommandTest {
         String[] args = {
             "create",
             "-d", directory,
-            "--app-namespace", "my.namespace",
-            "--app-version", "1.0.0.Beta",
+            "--namespace", "my.namespace",
+            "--project-version", "1.0.0.Beta",
             "--template", new File(new File(".").getAbsolutePath() + "/src/test/resources/lenient").toURI().toString(),
             "-p", "__c_domain_=MyDomain",
             "app-name-24"
