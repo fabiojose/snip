@@ -22,8 +22,8 @@ import net.lingala.zip4j.ZipFile;
 @Slf4j
 public class TemplationFetcher {
 
-    private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-    private static final String SNIP_TMP_DIR = TMP_DIR + FileSystems.getDefault().getSeparator()  + "snip";
+    public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    public static final String SNIP_TMP_DIR = TMP_DIR + FileSystems.getDefault().getSeparator()  + "snip";
 
     private static final Pattern LOCAL_TEMPLATE =
         Pattern.compile("^file:/.+$");

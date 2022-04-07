@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.junit.jupiter.api.Test;
 
+import io.github.kattlo.snip.templation.TemplationFetcher;
 import picocli.CommandLine;
 
 public class CreateCommandTest {
@@ -224,7 +225,7 @@ public class CreateCommandTest {
     public void should_checkout_local_template_to_directory() {
 
         // setup
-        var expected = Path.of("/tmp/snip", "example");
+        var expected = Path.of(TemplationFetcher.SNIP_TMP_DIR, "example");
 
         String[] args = {
             "create",
