@@ -2,14 +2,14 @@ package io.github.kattlo.snip.templation;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.io.FileUtils;
 
@@ -22,17 +22,24 @@ import net.lingala.zip4j.ZipFile;
 @Slf4j
 public class TemplationFetcher {
 
-    private static final String TMP_DIR = "/tmp/snip";
+    private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
+    private static final String SNIP_TMP_DIR = TMP_DIR + FileSystems.getDefault().getSeparator()  + "snip";
 
-    private static final Pattern LOCAL_TEMPLATE = 
+    private static final Pattern LOCAL_TEMPLATE =
         Pattern.compile("^file:/.+$");
+
+    private static final Pattern REMOTE_TEMPLATE = Pattern.compile("^https?:/.+$");
 
     private URI templation;
     private Path localhost;
     private URL remote;
 
     private TemplationFetcher() {}
-    
+
+    String getGithubAPIBaseURL() {
+        return System.getProperty("snip.github.api.baseurl", "https://api.github.com/");
+    }
+
     public Path fetch() throws IOException, URISyntaxException {
 
         Path target = null;
@@ -40,12 +47,12 @@ public class TemplationFetcher {
         if(null!= this.remote){
             log.debug("downloading the remote templation {}", this.remote);
 
-            this.remote.getFile();
-            target = Path.of(TMP_DIR, templation.toString());
+            final var normalizedName = templation.toString().replaceAll("/", "-").replaceAll(":", "-");
+            target = Path.of(SNIP_TMP_DIR, normalizedName);
             FileUtils.deleteQuietly(target.toFile());
             Files.createDirectories(target);
 
-            var targetFile = Path.of("/tmp", templation.toString().replaceAll("/", "-") + ".zip");
+            var targetFile = Path.of(TMP_DIR, normalizedName + ".zip");
 
             FileUtils.copyURLToFile(this.remote, targetFile.toFile());
             var zip = new ZipFile(targetFile.toFile());
@@ -56,10 +63,9 @@ public class TemplationFetcher {
 
             log.debug("templation donwloaded at {}", target);
 
-                
         } else {
-        
-            target = Path.of(TMP_DIR, this.localhost.toFile().getName());
+
+            target = Path.of(SNIP_TMP_DIR, this.localhost.toFile().getName());
             Files.createDirectories(target);
 
             FileUtils.copyDirectory(this.localhost.toFile(), target.toFile(), false);
@@ -70,28 +76,35 @@ public class TemplationFetcher {
     }
 
     public static TemplationFetcher create(URI templation) throws IOException {
-        log.debug("templation from {}" + templation);
 
         Path localTemplate = null;
         URL remoteTemplate = null;
 
         if(LOCAL_TEMPLATE.matcher(templation.toString()).matches()){
+
             localTemplate = new File(templation).toPath();
             if(!Files.exists(localTemplate)){
                 throw new TemplationNotFoundException(templation.toString());
             }
             log.debug("using templation from local at: {}", localTemplate);
 
+        } else if(REMOTE_TEMPLATE.matcher(templation.toString()).matches()) {
+            remoteTemplate = templation.toURL();
+            log.debug("templation from custom URL: {}", remoteTemplate);
         } else {
             remoteTemplate = new URL("https://api.github.com/repos/" + templation + "/zipball");
-            var https = (HttpsURLConnection)remoteTemplate.openConnection();
+            log.debug("templation from github: {}", remoteTemplate);
+        }
+
+        if(null!= remoteTemplate) {
+
+            var https = (HttpURLConnection)remoteTemplate.openConnection();
             https.setRequestMethod("HEAD");
 
-            if(HttpsURLConnection.HTTP_OK != https.getResponseCode()){
+            if(HttpURLConnection.HTTP_OK != https.getResponseCode()){
                 throw new TemplationNotFoundException(templation.toString());
             }
 
-            log.debug("using template from remote at: {}", remoteTemplate);
         }
 
         var fetcher = new TemplationFetcher();
