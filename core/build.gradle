@@ -14,7 +14,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.github.erosb:everit-json-schema:1.14.1'
     implementation 'org.zeroturnaround:zt-exec:1.12'
-    implementation 'net.lingala.zip4j:zip4j:2.7.0'
+    implementation 'net.lingala.zip4j:zip4j:2.10.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
