@@ -1,0 +1,2 @@
+project=__name_
+version=__version_

@@ -1,77 +1,37 @@
-plugins {
-    id 'java'
-    id 'io.quarkus'
-    id 'jacoco'
-}
+subprojects {
 
-repositories {
-    mavenLocal()
+  group 'io.github.fabiojose.snip'
+  version '0.11.0'
+
+  apply plugin: 'java'
+
+  repositories {
     mavenCentral()
-    maven {
-        url 'https://jitpack.io'
+    mavenLocal()
+  }
+
+  java {
+      sourceCompatibility = JavaVersion.VERSION_11
+      targetCompatibility = JavaVersion.VERSION_11
+  }
+
+  compileJava {
+      options.encoding = 'UTF-8'
+      options.compilerArgs << '-parameters'
+  }
+
+  compileTestJava {
+      options.encoding = 'UTF-8'
+  }
+
+  test {
+      systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+      useJUnitPlatform()
+  }
+
+  task printClasspath {
+    doLast {
+        println sourceSets.main.runtimeClasspath.asPath
     }
-}
-
-dependencies {
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-picocli'
-    implementation 'io.quarkus:quarkus-arc'
-
-    implementation 'org.yaml:snakeyaml:1.27'
-    implementation 'org.unix4j:unix4j-command:0.5'
-    implementation 'commons-io:commons-io:2.8.0'
-    implementation 'net.lingala.zip4j:zip4j:2.7.0'
-
-    implementation 'org.apache.commons:commons-lang3:3.11'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.everit-org.json-schema:org.everit.json.schema:1.12.2'
-    implementation 'org.zeroturnaround:zt-exec:1.12'
-
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.32.0'
-    testImplementation 'commons-io:commons-io:2.11.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.4.0'
-
-    annotationProcessor enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    annotationProcessor 'info.picocli:picocli-codegen'
-
-    compileOnly 'org.projectlombok:lombok:1.18.10'
-    annotationProcessor 'org.projectlombok:lombok:1.18.10'
-}
-
-group 'com.github.kattlo.snip'
-version '0.4.0'
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-compileJava {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << '-parameters'
-}
-
-compileTestJava {
-    options.encoding = 'UTF-8'
-}
-
-test {
-    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.enabled true
-        csv.enabled true
-    }
-}
-
-task printClasspath {
-   doLast {
-       println sourceSets.main.runtimeClasspath.asPath
-   }
+  }
 }
