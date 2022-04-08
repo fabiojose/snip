@@ -52,8 +52,7 @@ jreleaser {
         authors = ['fabiojose@gmail.com']
         license = 'Apache-2.0'
         extraProperties.put('inceptionYear', '2021')
-        description = 'Play with Apache Kafka®'
-        longDescription = 'Play with Apache Kafka®. Good for proof-of-concept, labs, fast development and study.'
+        description = 'The easiest way to scaffold projects'
     }
 
     release {
@@ -82,12 +81,6 @@ jreleaser {
           fileSet {
             input = '.'
             includes = ['LICENSE', 'README.md']
-          }
-
-          fileSet {
-            input = 'src/scripts'
-            includes = ['*']
-            output = 'bin'
           }
 
           fileSet {
