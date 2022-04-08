@@ -1,0 +1,14 @@
+# Folders
+.git/
+.gradle/
+build/
+
+# Files
+.project
+.classpath
+my-file.txt
+
+# Wildcard
+*.png
+*.iml
+*.iws

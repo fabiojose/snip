@@ -9,3 +9,6 @@ pluginManagement {
     }
 }
 rootProject.name='snip'
+
+include 'core'
+include 'cli'

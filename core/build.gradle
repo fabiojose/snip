@@ -1,0 +1,89 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+description 'Snip Core'
+
+dependencies {
+    implementation 'org.unix4j:unix4j-command:0.5'
+    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'org.yaml:snakeyaml:1.27'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.erosb:everit-json-schema:1.14.1'
+    implementation 'org.zeroturnaround:zt-exec:1.12'
+    implementation 'net.lingala.zip4j:zip4j:2.7.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    testImplementation 'com.github.tomakehurst:wiremock-jre8:2.32.0'
+    testImplementation 'commons-io:commons-io:2.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.4.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+    suppressedValidationErrors.add('enforced-platform')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'snip-core'
+            version = project.version
+
+            from components.java
+
+            pom {
+                name = 'Snip Core'
+                packaging = 'jar'
+                description = 'Core classes used by snip-cli'
+                url = 'https://github.com/fabiojose/snip'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'fabiojose'
+                        name = 'Fábio José'
+                        email = 'fabiojose@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/fabiojose/snip.git'
+                    developerConnection = 'scm:git:https://github.com/fabiojose/snip.git'
+                    url = 'https://github.com/fabiojose/snip'
+                }
+            }
+        }
+    }
+    repositories {
+      maven {
+        name 'OSSRH'
+        url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        credentials {
+          username = ossrhUsername
+          password = ossrhPassword
+        }
+      }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}

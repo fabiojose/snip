@@ -1,0 +1,8 @@
+package __namespace_;
+
+/**
+ * @version __version_
+ */
+public class SomeArtifact {
+
+}

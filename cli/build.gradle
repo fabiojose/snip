@@ -1,0 +1,109 @@
+plugins {
+    id 'io.quarkus'
+    id 'org.jreleaser' version '1.0.0-M3'
+}
+
+dependencies {
+    implementation project(':core')
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-picocli'
+    implementation 'io.quarkus:quarkus-arc'
+    implementation 'commons-io:commons-io:2.8.0'
+
+    implementation 'org.json:json:20220320'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+
+    annotationProcessor enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    annotationProcessor 'info.picocli:picocli-codegen'
+
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    implementation 'info.picocli:picocli:4.6.3'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+}
+
+description 'Snip CLI'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+jar {
+  archiveFileName = 'snip.jar'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+jreleaser {
+    gitRootSearch = true
+    project {
+        name = 'klay'
+        website = 'https://github.com/fabiojose/snip'
+        authors = ['fabiojose@gmail.com']
+        license = 'Apache-2.0'
+        extraProperties.put('inceptionYear', '2021')
+        description = 'Play with Apache Kafka®'
+        longDescription = 'Play with Apache Kafka®. Good for proof-of-concept, labs, fast development and study.'
+    }
+
+    release {
+        github {
+            username = 'fabiojose'
+            owner = 'fabiojose'
+            overwrite = true
+            changelog {
+              formatted = 'ALWAYS'
+              preset = 'conventional-commits'
+              format = '- {{commitShortHash}} {{commitTitle}}'
+            }
+        }
+    }
+
+    assemble {
+      archive {
+        klay {
+          active = 'ALWAYS'
+          distributionType = 'JAVA_BINARY'
+
+          formats = [
+            org.jreleaser.model.Archive$Format.TGZ
+          ]
+
+          fileSet {
+            input = '.'
+            includes = ['LICENSE', 'README.md']
+          }
+
+          fileSet {
+            input = 'src/scripts'
+            includes = ['*']
+            output = 'bin'
+          }
+
+          fileSet {
+            input = 'build'
+            includes = ['*.jar']
+            output = 'lib'
+          }
+        }
+      }
+    }
+
+    distributions {
+        klay {
+           artifact {
+               path = 'build/jreleaser/assemble/snip/archive/{{distributionName}}-{{projectVersion}}.tgz'
+           }
+        }
+    }
+}

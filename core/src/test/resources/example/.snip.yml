@@ -1,0 +1,19 @@
+description: |
+  Describe your templation
+placeholders:
+  strict: yes # all placeholders must be provided
+  spec:
+    - name: __c_author_
+      pattern: ".+"
+      label: Author Name
+    - name: __c_domain_
+      pattern: '[A-Z][\w]+'
+      label: Class name for Domain
+post:
+  script:
+    linux: # base directory is the appdir
+      - ls -alh .
+      - echo linux
+    windows:
+      - dir
+      - echo windows
