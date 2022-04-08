@@ -70,7 +70,7 @@ jreleaser {
 
     assemble {
       archive {
-        klay {
+        snip {
           active = 'ALWAYS'
           distributionType = 'JAVA_BINARY'
 
