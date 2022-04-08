@@ -47,7 +47,7 @@ compileTestJava {
 jreleaser {
     gitRootSearch = true
     project {
-        name = 'klay'
+        name = 'snip'
         website = 'https://github.com/fabiojose/snip'
         authors = ['fabiojose@gmail.com']
         license = 'Apache-2.0'
