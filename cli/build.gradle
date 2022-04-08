@@ -93,7 +93,7 @@ jreleaser {
     }
 
     distributions {
-        klay {
+        snip {
            artifact {
                path = 'build/jreleaser/assemble/snip/archive/{{distributionName}}-{{projectVersion}}.tgz'
            }
