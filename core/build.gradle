@@ -11,7 +11,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.yaml:snakeyaml:1.27'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.erosb:everit-json-schema:1.14.1'
     implementation 'org.zeroturnaround:zt-exec:1.12'
     implementation 'net.lingala.zip4j:zip4j:2.7.0'
