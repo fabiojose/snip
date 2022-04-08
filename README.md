@@ -105,7 +105,7 @@ public class __domain_Get{
 
 ### Built-in Placeholders
 
-- `__namespace_`: project's namespace or package
+- `__namespace_`: project's namespace (aka package)
 - `__name_`: project's name
 - `__version_`: project's version
 
