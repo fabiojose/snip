@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -40,7 +39,7 @@ public class TemplationFetcher {
         return System.getProperty("snip.github.api.baseurl", "https://api.github.com/");
     }
 
-    public Path fetch() throws IOException, URISyntaxException {
+    public Path fetch() throws IOException {
 
         Path target = null;
 

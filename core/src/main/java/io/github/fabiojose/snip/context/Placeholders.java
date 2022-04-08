@@ -32,6 +32,9 @@ public class Placeholders {
     public static final Pattern PLACEHOLDER_PATTERN =
         Pattern.compile("(" + PLACEHOLDER_PATTERN_STRING + ")");
 
+    public static final Pattern PLACEHOLDER_VALUE_PATTERN =
+        Pattern.compile("^[\\w\\.\\-]+$");
+
     public static final Pattern OPTION_PATTERN =
         Pattern.compile("^[\\w\\.\\-]+$");
 

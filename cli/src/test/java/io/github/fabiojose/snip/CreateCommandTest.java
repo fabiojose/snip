@@ -78,54 +78,6 @@ public class CreateCommandTest {
     }
 
     @Test
-    public void should_throw_when_local_template_not_exists() {
-
-        // setup
-        String[] args = {
-            "create",
-            "-d", directory,
-            "--namespace", "my.namespace",
-            "--project-version", "1.0.0",
-            "--template", "file:/path/not/exists",
-            "-p", "__c_domain_=MyDomain",
-            "-p", "__c_author_=fabiojose",
-            "app-name",
-        };
-
-        var command = new CommandLine(entry);
-
-        // act
-        var actual = command.execute(args);
-
-        // assert
-        assertEquals(2, actual);
-    }
-
-    @Test
-    public void should_throw_when_github_template_not_exists() {
-
-        // setup
-        String[] args = {
-            "create",
-            "-d", directory,
-            "--namespace", "my.namespace",
-            "--project-version", "1.0.0",
-            "--template", "fabiojose/unknown",
-            "-p", "__c_domain_=MyDomain",
-            "-p", "__c_author_=fabiojose",
-            "app-name",
-        };
-
-        var command = new CommandLine(entry);
-
-        // act
-        var actual = command.execute(args);
-
-        // assert
-        assertEquals(2, actual);
-    }
-
-    @Test
     public void should_throw_when_appname_does_not_follow_the_pattern() {
 
         // setup

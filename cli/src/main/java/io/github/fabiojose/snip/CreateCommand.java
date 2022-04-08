@@ -1,25 +1,16 @@
 package io.github.fabiojose.snip;
 
-import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
-import org.apache.commons.io.FileUtils;
-
-import io.github.fabiojose.snip.context.Context;
 import io.github.fabiojose.snip.context.IllegalPlaceholderException;
 import io.github.fabiojose.snip.context.Placeholders;
 import io.github.fabiojose.snip.context.ReservedPlaceholderException;
-import io.github.fabiojose.snip.processor.Processor;
-import io.github.fabiojose.snip.templation.ConfigurationLoader;
-import io.github.fabiojose.snip.templation.ScriptExecutor;
-import io.github.fabiojose.snip.templation.TemplationFetcher;
 import io.github.fabiojose.snip.templation.TemplationNotFoundException;
-import io.github.fabiojose.snip.util.JSONUtil;
 import io.github.fabiojose.snip.util.Reporter;
-import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -39,7 +30,6 @@ import picocli.CommandLine.Model.CommandSpec;
     description = "To create project based on templation",
     mixinStandardHelpOptions = true
 )
-@Slf4j
 public class CreateCommand implements Runnable {
 
     @Spec
@@ -48,9 +38,9 @@ public class CreateCommand implements Runnable {
     private Reporter reporter = Reporter.create();
     private Path directory;
     private String name;
-    private TemplationFetcher fetcher;
-    private final Placeholders.PlaceholdersBuilder placeholders =
-        Placeholders.builder();
+    private URI templateLocation;
+    private String projectVersion;
+    private String projectNamespace;
 
     private void validate(String value, String argName) {
 
@@ -90,8 +80,6 @@ public class CreateCommand implements Runnable {
     public void setName(String name) {
         validate(name, "name");
         this.name = name;
-
-        placeholders.name(name);
     }
 
     @Option(
@@ -106,7 +94,7 @@ public class CreateCommand implements Runnable {
     )
     public void setVersion(String version){
         validate(version, "--project-version");
-        placeholders.version(version);
+        this.projectVersion = version;
     }
 
     @Option(
@@ -122,7 +110,7 @@ public class CreateCommand implements Runnable {
     )
     public void setNamespace(String namespace){
         validate(namespace, "--namespace");
-        placeholders.namespace(namespace);
+        this.projectNamespace = namespace;
     }
 
     @Option(
@@ -140,91 +128,40 @@ public class CreateCommand implements Runnable {
         required = true
     )
     public void setTemplation(URI templation) {
-
-        try {
-            this.fetcher = TemplationFetcher.create(templation);
-        }catch(IOException e) {
-            throw new CommandLine.ParameterException(spec.commandLine(),
-                    "Unable to reach the templation location", e);
-        }catch(TemplationNotFoundException e) {
-            throw new CommandLine.ParameterException(spec.commandLine(),
-                    "Templation not found", e);
-        }
-
+        this.templateLocation = templation;
     }
 
     @Option(
-        names = {
-            "-p"
-        },
+        names = { "-p" },
+        paramLabel = "NAME=VALUE",
         description = "Custom placeholders used by a specific templation",
-        paramLabel = "placeholder=my-value"
+        required = false
     )
-    public void setParameters(String[] parameters) {
-        placeholders.parameters(Arrays.asList(parameters));
-    }
+    Map<String, String> customPlaceholders;
 
     @Override
     public void run() {
 
-        boolean succcess = false;
-        var appdir = Path.of(directory.toString(), name);
-        try{
-            // checkout to /tmp/snip/
-            var template = fetcher.fetch();
+        var templation = Templation.newBuilder()
+            .withLocation(this.templateLocation)
+            .withProjectLocation(this.directory)
+            .withProjectName(this.name)
+            .withProjectVersion(this.projectVersion)
+            .withProjectNamespace(this.projectNamespace)
+            .withPlaceholders(Optional.ofNullable(this.customPlaceholders).orElseGet(() -> Map.of()))
+            .build();
 
-            FileUtils.copyDirectory(template.toFile(), appdir.toFile());
-            log.debug("template copied to app directory at {}", appdir);
+        try {
 
-            // load .snip.yml, if any
-            var config = ConfigurationLoader.load(appdir);
+            var newProjectLocation = templation.newProject();
+            reporter.success("New app created at: " + newProjectLocation);
 
-            // custom placeholder rules, if any
-            config.
-                flatMap(c -> JSONUtil.pointer(c).asObject("#/placeholders"))
-                .ifPresent(placeholders::rules);
-
-            // remove .git folder (if exists)
-            var gitdir = Path.of(appdir.toString(), ".git");
-            FileUtils.deleteDirectory(gitdir.toFile());
-
-            var context = Context.create(placeholders.build(), template, appdir);
-
-            // process folders parameters
-            Processor.forDirectories().process(context);;
-
-            // process file name parameters
-            Processor.forFiles().process(context);
-
-            // process file content parameters
-            Processor.forContent().process(context);
-
-            // run post script, if any
-            config
-                .flatMap(c -> JSONUtil.pointer(c).asObject("#/post/script"))
-                .ifPresent(script ->
-                    ScriptExecutor.create(script, appdir).execute());
-
-            reporter.success("New app created at: " + appdir);
-            succcess = true;
-
-        }catch(IOException | URISyntaxException e){
+        }catch(UncheckedIOException | TemplationNotFoundException e) {
             throw new CommandLine.ExecutionException(spec.commandLine(),
                 e.getMessage(), e);
         }catch(ReservedPlaceholderException | IllegalPlaceholderException e){
             throw new CommandLine.ParameterException(spec.commandLine(),
                 e.getMessage(), e);
-        }finally{
-            // delete appdir when there no success
-            if(!succcess){
-                try{
-                    FileUtils.forceDelete(appdir.toFile());
-                }catch(IOException e) {
-                    System.err.println("Can not delete " + appdir);
-                    e.printStackTrace();
-                }
-            }
         }
-
     }
 }
