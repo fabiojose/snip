@@ -32,7 +32,7 @@ jobs:
       - name: Runnable Jar
         run: |
           ./gradlew test quarkusBuild --uber-jar -PossrhUsername=inv4lid -PossrhPassword=inv4lid
-          cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner.jar build/snip-${{steps.get_version.outputs.VERSION}}.jar
+          cp build/snip.jar build/snip-${{steps.get_version.outputs.VERSION}}.jar
 
       - name: Publish JAR
         uses: actions/upload-artifact@v2-preview
