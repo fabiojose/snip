@@ -148,9 +148,10 @@ To pass your custom placeholder to Snip scaffold is so simple, just use the
 
 ```bash
 snip c <options> \
-  -p 'comment=Some comments to use' \
-  -p "author=$USER" \
-  -p 'domain=payments' \
+  -p '__comment_=Some comments to use' \
+  -p "__author_=$USER" \
+  -p '__domain__=payments' \
+  -t <templation> \
   'my-new-project-name'
 ```
 
@@ -247,12 +248,12 @@ sh install.sh
 
 #### Packages
 
-- Debian and Ubuntu: [`.deb`]()
-- RedHat, Fedora and CentOS: [`.rpm`]()
+- Debian and Ubuntu: [`.deb`](https://github.com/fabiojose/snip/releases/latest)
+- RedHat, Fedora and CentOS: [`.rpm`](https://github.com/fabiojose/snip/releases/latest)
 
 ### MacOS
 
-- Download the lates [MacOS binary version]()
+- Download the lates [MacOS binary version](https://github.com/fabiojose/snip/releases/latest)
 - Save it as `snip`
 - Run the following commands:
 ```shell
@@ -265,12 +266,12 @@ snip -h
 
 #### Using the Setup
 
-- Download the latest [Windows setup version]()
+- Download the latest [Windows setup version](https://github.com/fabiojose/snip/releases/latest)
 - Open the downloaded setup and follow the instructions
 
 #### Binary
 
-- download the latest [zip for Windows]()
+- download the latest [zip for Windows](https://github.com/fabiojose/snip/releases/latest)
 - unzip it
 - copy `VCRUNTIME140.dll` to `C:\Windows\System32\`
 - get the absolute path to that unzipped directory
@@ -280,7 +281,7 @@ snip -h
 ### All
 
 - Install the [Java 11 for your O.S.](https://adoptopenjdk.net/releases.html)
-- Download the latest [über-jar]()
+- Download the latest [über-jar from assets](https://github.com/fabiojose/snip/releases/latest)
 - Run it:
 ```bash
 # Replace '<version>' with the downloaded version
@@ -291,28 +292,21 @@ java -jar snip-v<version>-all.jar -h
 
 ### Packaging and Running Snip from Source
 
-The application can be packaged using:
-```shell script
-./gradlew build
-```
-
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
-
 If you want to build an _über-jar_, execute the following command:
-```shell script
-./gradlew build -Dquarkus.package.type=uber-jar
+```console
+./gradlew build -Dquarkus.package.type=uber-jar -PossrhUsername=inv4lid -PossrhPassword=inv4lid
 ```
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+The application is now runnable using `java -jar cli/build/snip.jar`.
 
 ### Creating a native executable
 
 You can create a native executable using:
 ```shell script
-./gradlew clean build
+./gradlew clean build \
   -Dquarkus.package.type=native \
-  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$'
+  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$' \
+  -PossrhUsername=inv4lid -PossrhPassword=inv4lid
 ```
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
@@ -320,10 +314,11 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./gradlew clean build \
   -Dquarkus.package.type=native \
   -Dquarkus.native.container-build=true \
-  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$'
+  -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$' \
+  -PossrhUsername=inv4lid -PossrhPassword=inv4lid
 ```
 
-You can then execute your native executable with: `./build/code-with-quarkus-1.0.0-SNAPSHOT-runner`
+You can then execute your native executable with: `.cli/build/snip`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
 
