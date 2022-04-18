@@ -83,6 +83,7 @@ publishing {
 }
 
 signing {
+    required { gradle.taskGraph.hasTask("publish") }
     useGpgCmd()
     sign publishing.publications.mavenJava
 }
