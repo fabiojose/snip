@@ -1,8 +1,8 @@
 meta:
   description: Snip is the easiest way to scaffold projects
   vendor: Kattlo
-  maintainer: Fábio José <fabiojose@gmail.com>
-  url: https://github.com/kattlo/snip
+  maintainer: Fábio José <fabiojose@gmail.com
+  url: https://github.com/fabiojose/snip
   license: APACHE-2
 files:
   "/usr/bin/snip":

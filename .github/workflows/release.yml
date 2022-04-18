@@ -148,6 +148,7 @@ jobs:
         shell: bash
         run: |
           cp cli/build/snip snip-${{steps.get_version.outputs.VERSION}}
+          cp cli/build/snip snip
 
       - name: Publish Native Image
         if: success()
