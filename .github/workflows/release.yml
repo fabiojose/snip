@@ -31,7 +31,7 @@ jobs:
 
       - name: Runnable Jar
         run: |
-          ./gradlew test quarkusBuild --uber-jar
+          ./gradlew test quarkusBuild --uber-jar -PossrhUsername=inv4lid -PossrhPassword=inv4lid
           cp build/snip-${{steps.get_version.outputs.VERSION_BUILD}}-runner.jar build/snip-${{steps.get_version.outputs.VERSION}}.jar
 
       - name: Publish JAR
@@ -140,7 +140,8 @@ jobs:
         run: |
           ./gradlew clean build --no-daemon -Dquarkus.package.type=native \
             -Dquarkus.native.container-build=false \
-            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$',--no-fallback
+            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources='.*json$',--no-fallback \
+            -PossrhUsername=inv4lid -PossrhPassword=inv4lid
 
       - name: Copy Natine Artifact
         if: success()
@@ -273,7 +274,8 @@ jobs:
           ./gradlew.bat clean build --no-daemon -Dquarkus.package.type=native ^
             -Dquarkus.native.container-build=false ^
             -Dquarkus.native.graalvm-home=$(pwd)/graalvm-ce-java11-21.0.0.2 ^
-            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources=.*json$,-H:Log=registerResource:,--no-fallback
+            -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources=.*json$,-H:Log=registerResource:,--no-fallback ^
+            -PossrhUsername=inv4lid -PossrhPassword=inv4lid
 
       - name: Copy Natine Artifact
         shell: bash
