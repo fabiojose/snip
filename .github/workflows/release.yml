@@ -32,13 +32,13 @@ jobs:
       - name: Runnable Jar
         run: |
           ./gradlew test quarkusBuild --uber-jar -PossrhUsername=inv4lid -PossrhPassword=inv4lid
-          cp build/cli/snip.jar build/cli/snip-${{steps.get_version.outputs.VERSION}}.jar
+          cp cli/build/snip.jar cli/build/snip-${{steps.get_version.outputs.VERSION}}.jar
 
       - name: Publish JAR
         uses: actions/upload-artifact@v2-preview
         with:
           name: snip-${{steps.get_version.outputs.VERSION}}.jar
-          path: build/cli/*.jar
+          path: cli/build/*.jar
 
       - name: Create Release
         if: contains(github.ref, 'v')
@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: build/cli/snip-${{steps.get_version.outputs.VERSION}}.jar
+          asset_path: cli/build/snip-${{steps.get_version.outputs.VERSION}}.jar
           asset_name: snip-${{steps.get_version.outputs.VERSION}}-all.jar
           asset_content_type: application/java-archive
 
@@ -147,7 +147,7 @@ jobs:
         if: success()
         shell: bash
         run: |
-          cp build/cli/snip snip-${{steps.get_version.outputs.VERSION}}
+          cp cli/build/snip snip-${{steps.get_version.outputs.VERSION}}
 
       - name: Publish Native Image
         if: success()
@@ -275,6 +275,11 @@ jobs:
             -Dquarkus.native.graalvm-home=$(pwd)/graalvm-ce-java11-21.0.0.2 ^
             -Dquarkus.native.additional-build-args=-H:EnableURLProtocols=https,-H:IncludeResources=.*json$,-H:Log=registerResource:,--no-fallback ^
             -PossrhUsername=inv4lid -PossrhPassword=inv4lid
+
+      - name: Copy Natine Artifact
+        shell: bash
+        run: |
+          cp cli/build/snip.exe snip.exe
 
       - name: Copy VCRuntime
         shell: bash
