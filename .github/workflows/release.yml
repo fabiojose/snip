@@ -27,7 +27,7 @@ jobs:
         id: get_version
         run: |
           echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-          echo ::set-output name=VERSION_BUILD::$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+          echo ::set-output name=VERSION_BUILD::$(./gradlew cli:properties -q | grep "version:" | awk '{print $2}')
 
       - name: Runnable Jar
         run: |
