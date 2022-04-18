@@ -240,7 +240,7 @@ jobs:
   build-windows-image:
     needs: [build-jar]
     name: Build Windows Image
-    runs-on: windows-2016
+    runs-on: windows-2022
 
     steps:
       - name: 'Checkout'
