@@ -17,7 +17,7 @@ dependencies {
     annotationProcessor enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     annotationProcessor 'info.picocli:picocli-codegen'
 
-    compileOnly 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     implementation 'info.picocli:picocli:4.6.3'
